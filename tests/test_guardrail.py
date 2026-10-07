@@ -67,6 +67,20 @@ class GuardrailTests(unittest.TestCase):
         self.assertEqual(fields["recommendation_code"], "request_clarification")
         self.assertIn("annual cost", fields["missing_information"])
 
+    def test_mandatory_reviews_outrank_overlap_evaluation(self):
+        fields, corrections = apply_guardrail(
+            draft(recommendation_code="evaluate_existing_tool_first", risk_flags=["existing_tool_overlap", "privacy_review_required"]),
+            policy(risk_flags=["existing_tool_overlap", "security_review_required", "privacy_review_required"]), {"get_vendor_status"})
+        self.assertEqual(fields["recommendation_code"], "route_for_reviews")
+        self.assertTrue(any("outrank" in c for c in corrections))
+
+    def test_overlap_evaluation_stands_when_no_review_is_required(self):
+        fields, _ = apply_guardrail(
+            draft(recommendation_code="evaluate_existing_tool_first", risk_flags=["existing_tool_overlap"]),
+            policy(risk_flags=["existing_tool_overlap"], required_approvals=["Department Head", "Procurement"],
+                   suggested_recommendation_code="evaluate_existing_tool_first"), {"get_vendor_status"})
+        self.assertEqual(fields["recommendation_code"], "evaluate_existing_tool_first")
+
     def test_human_review_always_true(self):
         fields, _ = apply_guardrail(draft(), policy(), {"get_vendor_status"})
         self.assertTrue(fields["human_review_required"])

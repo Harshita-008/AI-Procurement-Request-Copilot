@@ -85,5 +85,5 @@ def policy_corrections(decision: ProcurementDecision) -> int:
     tel = decision.telemetry
     if not tel:
         return 0
-    keys = ("added approval", "added risk flag", "removed unsupported", "downgraded", "set to request_clarification")
+    keys = ("added approval", "added risk flag", "removed unsupported", "recommendation downgraded", "recommendation set to")
     return sum(1 for c in tel.guardrail_corrections if any(k in c for k in keys))

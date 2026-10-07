@@ -1,7 +1,7 @@
 {
  "request_id": "SYN-2004",
- "recommendation": "Evaluate existing tool before purchase",
- "recommendation_code": "evaluate_existing_tool_first",
+ "recommendation": "Route for required reviews before approval",
+ "recommendation_code": "route_for_reviews",
  "summary": "While the requested spend is within budget, there is a company-wide subscription to DocSpace already in use. The requester must explain why the current instance cannot accommodate this use case before proceeding to security and privacy reviews.",
  "evidence": [
   {
@@ -55,7 +55,8 @@
   "output_tokens": 1421,
   "cache_read_input_tokens": 0,
   "guardrail_corrections": [
-   "dropped model-added missing information (policy §1 lists none): Explanation for why the existing company-wide DocSpace instance cannot be utilized for this use case."
+   "dropped model-added missing information (policy §1 lists none): Explanation for why the existing company-wide DocSpace instance cannot be utilized for this use case.",
+   "recommendation set to route_for_reviews (mandatory reviews outrank overlap evaluation)"
   ],
   "raw_model_output": {
    "recommendation_code": "evaluate_existing_tool_first",

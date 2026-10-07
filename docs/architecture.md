@@ -75,6 +75,7 @@ After the model answers, code merges in the deterministic result:
 - evidence whose `source` is not a tool the agent itself called is dropped (internal tool-to-tool runs do not count), and so is evidence quoting a number or date that appears in no tool result, the request or the policy text;
 - risk flags outside the taxonomy are dropped;
 - `approve` is downgraded when any blocking flag exists; missing information forces `request_clarification`; an over-budget request forces `escalate_budget_exception` (policy §2);
+- mandatory Security, Privacy or Legal reviews outrank "evaluate existing tool first" (policy §5-7 before §3);
 - `human_review_required` is always true.
 
 Every correction is recorded in telemetry. The raw model draft is kept, so evaluation can measure how often each architecture was right *before* the guardrail.

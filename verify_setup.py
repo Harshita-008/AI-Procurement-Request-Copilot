@@ -127,11 +127,13 @@ def check_mock_api() -> None:
     health = client.get("/health")
     if health.status_code != 200 or health.json().get("status") != "ok":
         fail("Mock API health endpoint failed")
-    known = client.get("/vendor-risk/BrandBoard")
-    if known.status_code != 200 or known.json().get("security_review_status") != "not_completed":
+    risk = json.loads((ROOT / "data" / "vendor_risk.json").read_text(encoding="utf-8"))
+    normal = next(name for name, rec in risk.items() if not rec.get("force_error"))
+    failing = next(name for name, rec in risk.items() if rec.get("force_error"))
+    known = client.get(f"/vendor-risk/{normal}")
+    if known.status_code != 200 or known.json().get("security_review_status") != risk[normal]["security_review_status"]:
         fail("Mock API known-vendor check failed")
-    outage = client.get("/vendor-risk/NimbusAI")
-    if outage.status_code != 503:
+    if client.get(f"/vendor-risk/{failing}").status_code != 503:
         fail("Mock API simulated-outage check failed")
     ok("Mock vendor-risk API checks passed")
 

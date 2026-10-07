@@ -25,7 +25,7 @@ The `rules` architecture and **Load saved evaluation result** work without any k
 Tests and evaluation:
 
 ```powershell
-python -m unittest discover -s tests                     # 78 unit tests, no key needed
+python -m unittest discover -s tests                     # 80 unit tests, no key needed
 python evals/run_public_evals.py --architecture single   # starter's 6 public cases
 python evals/run_public_evals.py --architecture staged
 python evals/run_comparison.py --runs 3 --resume         # 15 cases x 3 runs on single, staged, rules
@@ -80,7 +80,7 @@ Diagrams, assumptions and reliability controls: [docs/architecture.md](docs/arch
 
 **Tools (all deterministic):** `get_requester_and_budget`, `search_software_catalog`, `get_vendor_status` (registry + risk API, 365-day currency, conflict detection), `run_policy_checks` (the policy engine), `lookup_policy`.
 
-**Code guardrail (both architectures):** approvals and flags can never be weaker than policy; code-owned facts (budget, availability, expiry, conflict, missing information) are set by code; flags outside the taxonomy are dropped; evidence is dropped unless it names a tool the agent actually called **and** every number or date it quotes appears in a tool result, the request or the policy text; deterministic findings fill any evidence gap; `approve` is blocked when any blocking flag exists; over-budget forces the Finance exception route; human review is always required. Every correction is recorded, and the raw model draft is kept so evaluation can score the model on its own.
+**Code guardrail (both architectures):** approvals and flags can never be weaker than policy; code-owned facts (budget, availability, expiry, conflict, missing information) are set by code; flags outside the taxonomy are dropped; evidence is dropped unless it names a tool the agent actually called **and** every number or date it quotes appears in a tool result, the request or the policy text; deterministic findings fill any evidence gap; `approve` is blocked when any blocking flag exists; over-budget forces the Finance exception route; mandatory reviews outrank "evaluate existing tool first"; human review is always required. Every correction is recorded, and the raw model draft is kept so evaluation can score the model on its own.
 
 **Reliability controls:** request fields normalised before any rule runs (numeric strings, blank values, string-typed integration lists); an unrecognised `data_access_level` is treated as unclassified (Security review plus a clarification item) rather than silently internal; vendor API 503/404/unreachable → `vendor_risk_unavailable` and manual review (the adapter starts the local mock API if it is down; set `AUTO_START_MOCK_API=false` to demo an outage); model failure → rules-only decision with `llm_unavailable`; request text and vendor notes scanned for injection; a completeness gate rejects any model answer produced before the four core tools were consulted; junk tool arguments from weaker models are ignored and logged.
 
@@ -116,7 +116,7 @@ Results (15 cases × 3 runs, model `gemini-3.1-flash-lite`; full table and per-c
 | Metric | single | staged | rules |
 |---|---:|---:|---:|
 | Cases passing minimum checks | 45/45 | 45/45 | 45/45 |
-| Final recommendation correct | 44/45 | 44/45 | 45/45 |
+| Final recommendation correct | 45/45 | 45/45 | 45/45 |
 | Escalation / human review correct | 45/45 | 45/45 | 45/45 |
 | Model's own recommendation correct (pre-guardrail) | 44/45 | 43/45 | – |
 | Model evidence grounded: source tool / quoted values | 95% / 99% | 100% / 99% | – |
@@ -124,7 +124,7 @@ Results (15 cases × 3 runs, model `gemini-3.1-flash-lite`; full table and per-c
 | Avg LLM calls / tool calls | 3.0 / 4.0 | 4.0 / 4.0 | 0 / 4.0 |
 | Avg input / output tokens | 9.8k / 0.9k | 13.9k / 1.4k | 0 |
 
-The one remaining miss is run-to-run variance: each agent under-routed the employee-PII request once in three runs, and the guardrail added Security and Privacy both times, so the output stayed policy-compliant. An earlier version of the overlap rule treated any product-name match as a duplicate, which sent a training pack for an approved tool to "evaluate existing tool first" on every architecture; the rule now separates a same-category match (possible duplicate) from an add-on or service in another category, and the rules baseline is correct on all 15 cases.
+Run-to-run variance appeared once per agent: on the employee-PII request the model ranked the overlap with an existing tool above the mandatory Security and Privacy reviews. The guardrail enforces that precedence in code, so the final recommendation is correct on every run, and the pre-guardrail row shows the model's own miss. An earlier version of the overlap rule treated any product-name match as a duplicate, which sent a training pack for an approved tool to "evaluate existing tool first" on every architecture; the rule now separates a same-category match (possible duplicate) from an add-on or service in another category, and the rules baseline is correct on all 15 cases.
 
 A first single-agent run on a weaker free model (`nvidia/nemotron-3-super-120b-a12b:free`, archived in `evals/results/archive_nemotron_single/`) scored 7/15 before the guardrail and 13/15 after it, with 2.8 corrections per case. Model quality mattered more than architecture; the deterministic layer is what keeps weak models safe.
 

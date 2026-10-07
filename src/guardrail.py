@@ -20,6 +20,8 @@ EVIDENCE_COVERAGE = {
     "run_policy_checks": {"approval_thresholds", "data_classification", "required_fields", "injection_scan"},
 }
 
+# Mandatory reviews outrank "evaluate the existing tool first" (policy §5-7 before §3).
+REVIEW_FLAGS = {"security_review_required", "privacy_review_required", "legal_review_required", "vendor_review_expired"}
 # Flags where code is the source of truth in both directions.
 CODE_OWNED_FLAGS = {"budget_insufficient", "vendor_risk_unavailable", "vendor_review_expired",
                     "conflicting_vendor_evidence", "missing_information"}
@@ -103,6 +105,9 @@ def apply_guardrail(draft: ModelDecision, policy: PolicyResult, tools_used: set[
     elif "budget_insufficient" in flags and code not in {"escalate_budget_exception", "escalate_manual_review"}:
         code = "escalate_budget_exception"
         corrections.append("recommendation set to escalate_budget_exception (policy §2: cost exceeds available budget)")
+    elif code == "evaluate_existing_tool_first" and flags & REVIEW_FLAGS:
+        code = "route_for_reviews"
+        corrections.append("recommendation set to route_for_reviews (mandatory reviews outrank overlap evaluation)")
 
     return {
         "recommendation": label(code),

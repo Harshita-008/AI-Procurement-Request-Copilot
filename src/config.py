@@ -60,6 +60,7 @@ MAX_AGENT_TURNS = 8
 MAX_OUTPUT_TOKENS = 8000
 
 VENDOR_RISK_BASE_URL = os.getenv("VENDOR_RISK_BASE_URL", "http://127.0.0.1:8001")
+UI_PORT = os.getenv("UI_PORT", "8501")
 VENDOR_API_TIMEOUT_SECONDS = 3.0
 # Auto-start the local mock API when it is down. Set false to demo an outage.
 AUTO_START_MOCK_API = os.getenv("AUTO_START_MOCK_API", "true").strip().lower() == "true"

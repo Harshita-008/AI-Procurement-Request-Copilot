@@ -5,7 +5,7 @@ import subprocess
 import sys
 import time
 
-from src.config import ROOT, VENDOR_RISK_BASE_URL
+from src.config import ROOT, UI_PORT, VENDOR_RISK_BASE_URL
 from src.mock_api_runner import ensure_mock_api, is_mock_api_up
 
 
@@ -16,8 +16,8 @@ def main() -> None:
         print(f"Vendor-risk API {'started' if api_proc else 'already running'} at {VENDOR_RISK_BASE_URL}")
         if api_proc:
             procs.append(api_proc)
-        print("Starting UI on http://127.0.0.1:8501 ...")
-        procs.append(subprocess.Popen([sys.executable, "-m", "streamlit", "run", "app.py", "--server.port", "8501"], cwd=ROOT))
+        print(f"Starting UI on http://127.0.0.1:{UI_PORT} ...")
+        procs.append(subprocess.Popen([sys.executable, "-m", "streamlit", "run", "app.py", "--server.port", UI_PORT], cwd=ROOT))
         while all(p.poll() is None for p in procs):
             time.sleep(1)
             if not is_mock_api_up():

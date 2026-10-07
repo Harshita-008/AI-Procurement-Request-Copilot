@@ -1,6 +1,7 @@
 """Tool registry: JSON schemas for the model plus the Python functions behind them."""
 from __future__ import annotations
 
+from src.config import REVIEW_VALID_DAYS
 from src.tools.catalog import search_software_catalog
 from src.tools.policy import lookup_policy, run_policy_checks
 from src.tools.requester import get_requester_and_budget
@@ -45,7 +46,7 @@ TOOL_SPECS = [
     },
     {
         "name": "get_vendor_status",
-        "description": "Get the vendor's internal registry record and the external vendor-risk service record, with assessment currency (365-day rule) and registry/API conflicts computed against the policy reference date.",
+        "description": f"Get the vendor's internal registry record and the external vendor-risk service record, with assessment currency ({REVIEW_VALID_DAYS}-day rule) and registry/API conflicts computed against the policy reference date.",
         "input_schema": {
             "type": "object",
             "properties": {"vendor_name": {"type": "string"}},

@@ -1,7 +1,7 @@
 {
  "request_id": "SYN-2004",
- "recommendation": "Evaluate existing tool before purchase",
- "recommendation_code": "evaluate_existing_tool_first",
+ "recommendation": "Route for required reviews before approval",
+ "recommendation_code": "route_for_reviews",
  "summary": "The request for DocSpace People Hub should be evaluated against the existing company-wide DocSpace subscription. Pending that, it requires security and privacy reviews due to the handling of employee PII.",
  "evidence": [
   {
@@ -63,7 +63,8 @@
    "dropped model-added missing information (policy §1 lists none): Justification for why the existing company-wide DocSpace subscription cannot be used for this specific onboarding and handbook use case.",
    "dropped evidence from 'get_vendor_status' quoting values not in any tool result: ['2027']",
    "added deterministic evidence: budget_check",
-   "added deterministic evidence: vendor_status"
+   "added deterministic evidence: vendor_status",
+   "recommendation set to route_for_reviews (mandatory reviews outrank overlap evaluation)"
   ],
   "raw_model_output": {
    "recommendation_code": "evaluate_existing_tool_first",

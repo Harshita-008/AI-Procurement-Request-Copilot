@@ -49,7 +49,7 @@ def assess_vendor(registry: dict | None, risk: dict | None, availability: str) -
         if reg_date and api_date and reg_date != api_date:
             conflicts.append(f"review dates differ ({reg_date} vs {api_date})")
     if registry and reg_status in APPROVED_WORDS and not reg_cur["current"]:
-        conflicts.append("registry marks the vendor approved but its review date is outside the 365-day window")
+        conflicts.append(f"registry marks the vendor approved but its review date is outside the {REVIEW_VALID_DAYS}-day window")
 
     assessment_current = bool(
         availability == "ok" and api_status in APPROVED_WORDS and api_cur["current"]
