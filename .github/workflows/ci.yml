@@ -1,0 +1,25 @@
+# Runs everything that needs no model key: preflight, unit tests, the rules-only public evaluation,
+# and a re-score of the saved model decisions with the current guardrail.
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python verify_setup.py
+      - run: python -m unittest discover -s tests
+      - run: python evals/run_public_evals.py --architecture rules
+      - run: python evals/run_comparison.py --runs 3 --report-only

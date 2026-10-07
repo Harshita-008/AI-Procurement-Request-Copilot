@@ -33,8 +33,10 @@ Recommendation codes:
 """ + "\n".join(f"- {code}: {label}" for code, label in RECOMMENDATIONS.items()) + """
 
 Interpretation guidance:
-- Overlap is not automatic rejection. An expansion or add-on of an already approved tool with a credible
-  reason is normally fine; an exact duplicate of unused company-wide capacity should be evaluated first.
+- Overlap is not automatic rejection. The catalog tool tags matches: same_product (same capability, a
+  possible duplicate or seat expansion), related_product (add-on, service or training for an approved tool),
+  same_vendor, same_category. Only an exact duplicate of unused company-wide capacity should be evaluated
+  first; an add-on, training pack or expansion with a credible reason is normally fine.
 - An approved vendor or a previous purchase does not approve a new data class or use case.
 - Prefer the simplest correct next step and name who should act on it.
 """

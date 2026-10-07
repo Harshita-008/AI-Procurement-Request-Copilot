@@ -44,6 +44,12 @@ def minimum_check_failures(decision: ProcurementDecision, expectations: dict) ->
     return failures
 
 
+def escalation_correct(decision: ProcurementDecision, expectations: dict) -> bool:
+    """Human review is required and every approver the case expects is routed."""
+    groups = expectations.get("required_approvals_any_groups", [])
+    return bool(decision.human_review_required) and all(group_present(decision.required_approvals, g) for g in groups)
+
+
 def recommendation_correct(code: str | None, expectations: dict) -> bool | None:
     accepted = expectations.get("expected_recommendation_any")
     return None if not accepted else code in accepted

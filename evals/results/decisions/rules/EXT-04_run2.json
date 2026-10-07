@@ -1,7 +1,7 @@
 {
  "request_id": "REQ-1010",
- "recommendation": "Evaluate existing tool before purchase",
- "recommendation_code": "evaluate_existing_tool_first",
+ "recommendation": "Proceed to standard approvals",
+ "recommendation_code": "approve_with_standard_approvals",
  "summary": "Deterministic policy evaluation only; no model interpretation.",
  "evidence": [
   {
@@ -16,7 +16,7 @@
   },
   {
    "source": "catalog_overlap",
-   "finding": "Existing catalog items: SignFlow (same_product, Approved, Company-wide)",
+   "finding": "Existing catalog items: SignFlow (related_product, Approved, Company-wide)",
    "reference": "Policy §3"
   },
   {
@@ -37,7 +37,7 @@
  "risk_flags": [
   "existing_tool_overlap"
  ],
- "next_step": "Procurement to confirm with the requester whether the existing catalog tool meets the need before purchasing.",
+ "next_step": "Send to Manager for approval.",
  "human_review_required": true,
  "telemetry": {
   "llm_calls": 0,
@@ -50,7 +50,7 @@
   ],
   "architecture": "rules",
   "model": null,
-  "latency_ms": 42.6,
+  "latency_ms": 48.9,
   "input_tokens": 0,
   "output_tokens": 0,
   "cache_read_input_tokens": 0,
@@ -66,7 +66,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 5.8,
+    "duration_ms": 9.2,
     "output": {
      "found": true,
      "employee": {
@@ -105,11 +105,11 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 7.6,
+    "duration_ms": 11.0,
     "output": {
      "matches": [
       {
-       "match_kind": "same_product",
+       "match_kind": "related_product",
        "software_id": "SW010",
        "product_name": "SignFlow",
        "category": "E-signature",
@@ -122,7 +122,7 @@
       }
      ],
      "match_kinds": [
-      "same_product"
+      "related_product"
      ],
      "purchase_history": [
       {
@@ -147,7 +147,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 28.5,
+    "duration_ms": 28.0,
     "output": {
      "vendor_name": "SignFlow",
      "registry": {
@@ -201,7 +201,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 42.4,
+    "duration_ms": 48.7,
     "output": {
      "reference_date": "2026-09-30",
      "data_classes": {
@@ -234,11 +234,11 @@
      ],
      "reasons": {
       "existing_tool_overlap": [
-       "SignFlow (same_product, Approved, Company-wide)"
+       "SignFlow (related_product, Approved, Company-wide)"
       ]
      },
-     "suggested_recommendation_code": "evaluate_existing_tool_first",
-     "suggested_recommendation": "Evaluate existing tool before purchase",
+     "suggested_recommendation_code": "approve_with_standard_approvals",
+     "suggested_recommendation": "Proceed to standard approvals",
      "evidence": [
       {
        "source": "budget_check",
@@ -252,7 +252,7 @@
       },
       {
        "source": "catalog_overlap",
-       "finding": "Existing catalog items: SignFlow (same_product, Approved, Company-wide)",
+       "finding": "Existing catalog items: SignFlow (related_product, Approved, Company-wide)",
        "reference": "Policy §3"
       },
       {

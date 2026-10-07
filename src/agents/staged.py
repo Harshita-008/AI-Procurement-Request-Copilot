@@ -19,7 +19,7 @@ def run(llm: BaseLLM, ctx: ToolContext) -> tuple[ModelDecision, EvidencePack]:
     policy_result = ctx.call("run_policy_checks", internal=True)
     tool_results = {name: out for (name, _), out in ctx.cache.items() if name != "run_policy_checks"}
 
-    # The reviewer has no tools, so reuse the loop only for its "ask again on invalid JSON" behaviour.
+    # No tools for the reviewer; just retry once if its JSON is invalid.
     messages = [{"role": "user", "content": prompts.reviewer_message(ctx.request, pack.model_dump(), tool_results, policy_result)}]
     for _ in range(2):
         response = llm.structured(system=prompts.REVIEWER, messages=messages, output_model=ModelDecision, label="reviewer")

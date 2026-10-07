@@ -59,7 +59,7 @@
   ],
   "architecture": "rules",
   "model": null,
-  "latency_ms": 47.3,
+  "latency_ms": 44.9,
   "input_tokens": 0,
   "output_tokens": 0,
   "cache_read_input_tokens": 0,
@@ -75,7 +75,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 7.0,
+    "duration_ms": 11.3,
     "output": {
      "found": true,
      "employee": {
@@ -114,7 +114,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 8.3,
+    "duration_ms": 15.7,
     "output": {
      "matches": [
       {
@@ -156,7 +156,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 31.3,
+    "duration_ms": 16.9,
     "output": {
      "vendor_name": "HelpDeskly",
      "registry": {
@@ -210,7 +210,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 47.1,
+    "duration_ms": 44.7,
     "output": {
      "reference_date": "2026-09-30",
      "data_classes": {

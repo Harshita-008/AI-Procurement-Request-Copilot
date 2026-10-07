@@ -1,7 +1,7 @@
 case_id,request_id,architecture,passed_minimum_checks,latency_ms,llm_calls,tool_calls,model,recommendation_code,guardrail_corrections,failures
-PUB-01,REQ-1001,rules,True,53.7,0,4,,evaluate_existing_tool_first,0,
-PUB-02,REQ-1002,rules,True,40.0,0,4,,route_for_reviews,0,
-PUB-03,REQ-1003,rules,True,52.6,0,4,,route_for_reviews,0,
-PUB-04,REQ-1005,rules,True,70.3,0,4,,escalate_budget_exception,0,
-PUB-05,REQ-1006,rules,True,64.6,0,4,,request_clarification,0,
-PUB-06,REQ-1009,rules,True,46.0,0,4,,escalate_manual_review,0,
+PUB-01,REQ-1001,rules,True,32.9,0,4,,evaluate_existing_tool_first,0,
+PUB-02,REQ-1002,rules,True,31.8,0,4,,route_for_reviews,0,
+PUB-03,REQ-1003,rules,True,31.7,0,4,,route_for_reviews,0,
+PUB-04,REQ-1005,rules,True,32.5,0,4,,escalate_budget_exception,0,
+PUB-05,REQ-1006,rules,True,31.9,0,4,,request_clarification,0,
+PUB-06,REQ-1009,rules,True,32.4,0,4,,escalate_manual_review,0,

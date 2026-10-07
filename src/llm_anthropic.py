@@ -19,8 +19,7 @@ class AnthropicLLM(BaseLLM):
         self.calls = []
 
     def structured(self, *, system, messages, output_model, tools=None, label="", force_tools=False):
-        # force_tools is ignored: current Claude models reject forced tool_choice, so the prompt steers tool use
-        # and the agent loop's completeness gate re-asks if a tool was skipped.
+        # force_tools is ignored: Claude rejects forced tool_choice, so the prompt steers tool use.
         started = time.perf_counter()
         request = {
             "model": self.model,

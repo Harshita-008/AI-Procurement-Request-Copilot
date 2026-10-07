@@ -1,28 +1,38 @@
 {
  "request_id": "SYN-2001",
- "recommendation": "Escalate to manual review",
- "recommendation_code": "escalate_manual_review",
- "summary": "The purchase requires extensive manual review due to the processing of customer PII and the absence of a vendor risk record for the new vendor.",
+ "recommendation": "Route for required reviews before approval",
+ "recommendation_code": "route_for_reviews",
+ "summary": "The request for FormPilot is within budget but requires Security, Privacy, and Legal reviews due to the handling of customer PII and the vendor's unknown status.",
  "evidence": [
   {
-   "source": "get_requester_and_budget",
-   "finding": "Request is within budget: $11,000 cost vs $18,000 available.",
+   "source": "run_policy_checks",
+   "finding": "Budget is sufficient: $11,000 cost vs. $18,000 available.",
    "reference": "Policy §2"
   },
   {
-   "source": "search_software_catalog",
-   "finding": "No existing tool overlap found for category 'Forms & Surveys'.",
-   "reference": "Policy §3"
-  },
-  {
-   "source": "get_vendor_status",
-   "finding": "Vendor 'ZetaForms' has no registry or risk service record.",
-   "reference": "Policy §5"
+   "source": "run_policy_checks",
+   "finding": "Customer PII processing requires mandatory Security and Privacy reviews.",
+   "reference": "Policy §5, §6"
   },
   {
    "source": "run_policy_checks",
-   "finding": "Data access 'customer_pii' mandates security and privacy reviews.",
-   "reference": "Policy §5, §6, §7"
+   "finding": "New vendor with annual spend > $10,000 requires Legal review.",
+   "reference": "Policy §7"
+  },
+  {
+   "source": "budget_check",
+   "finding": "Budget within: cost 11000 vs available 18000 USD for Sales",
+   "reference": "Policy §2"
+  },
+  {
+   "source": "catalog_overlap",
+   "finding": "No approved catalog item matches this product, vendor or category",
+   "reference": "Policy §3"
+  },
+  {
+   "source": "vendor_status",
+   "finding": "Registry: None/None (None); risk service: no_record, status None (None); current=False",
+   "reference": "Policy §5"
   }
  ],
  "required_approvals": [
@@ -33,16 +43,13 @@
   "Privacy",
   "Legal"
  ],
- "missing_information": [
-  "vendor security assessment status (vendor-risk service unavailable)"
- ],
+ "missing_information": [],
  "risk_flags": [
   "legal_review_required",
   "privacy_review_required",
-  "security_review_required",
-  "vendor_risk_unavailable"
+  "security_review_required"
  ],
- "next_step": "Route to Security, Privacy, and Legal for manual assessment and risk determination due to lack of vendor history and nature of data.",
+ "next_step": "Initiate Security, Privacy, and Legal review processes, then route for Department Head, Finance, and Procurement approval.",
  "human_review_required": true,
  "telemetry": {
   "llm_calls": 3,
@@ -55,34 +62,33 @@
   ],
   "architecture": "single",
   "model": "gemini-3.1-flash-lite",
-  "latency_ms": 49988.4,
-  "input_tokens": 9382,
-  "output_tokens": 995,
+  "latency_ms": 25308.3,
+  "input_tokens": 9405,
+  "output_tokens": 851,
   "cache_read_input_tokens": 0,
-  "guardrail_corrections": [],
+  "guardrail_corrections": [
+   "added deterministic evidence: budget_check",
+   "added deterministic evidence: catalog_overlap",
+   "added deterministic evidence: vendor_status"
+  ],
   "raw_model_output": {
-   "recommendation_code": "escalate_manual_review",
-   "summary": "The purchase requires extensive manual review due to the processing of customer PII and the absence of a vendor risk record for the new vendor.",
+   "recommendation_code": "route_for_reviews",
+   "summary": "The request for FormPilot is within budget but requires Security, Privacy, and Legal reviews due to the handling of customer PII and the vendor's unknown status.",
    "evidence": [
     {
-     "source": "get_requester_and_budget",
-     "finding": "Request is within budget: $11,000 cost vs $18,000 available.",
+     "source": "run_policy_checks",
+     "finding": "Budget is sufficient: $11,000 cost vs. $18,000 available.",
      "reference": "Policy §2"
     },
     {
-     "source": "search_software_catalog",
-     "finding": "No existing tool overlap found for category 'Forms & Surveys'.",
-     "reference": "Policy §3"
-    },
-    {
-     "source": "get_vendor_status",
-     "finding": "Vendor 'ZetaForms' has no registry or risk service record.",
-     "reference": "Policy §5"
+     "source": "run_policy_checks",
+     "finding": "Customer PII processing requires mandatory Security and Privacy reviews.",
+     "reference": "Policy §5, §6"
     },
     {
      "source": "run_policy_checks",
-     "finding": "Data access 'customer_pii' mandates security and privacy reviews.",
-     "reference": "Policy §5, §6, §7"
+     "finding": "New vendor with annual spend > $10,000 requires Legal review.",
+     "reference": "Policy §7"
     }
    ],
    "required_approvals": [
@@ -93,16 +99,13 @@
     "Privacy",
     "Legal"
    ],
-   "missing_information": [
-    "vendor security assessment status (vendor-risk service unavailable)"
-   ],
+   "missing_information": [],
    "risk_flags": [
     "security_review_required",
     "privacy_review_required",
-    "legal_review_required",
-    "vendor_risk_unavailable"
+    "legal_review_required"
    ],
-   "next_step": "Route to Security, Privacy, and Legal for manual assessment and risk determination due to lack of vendor history and nature of data."
+   "next_step": "Initiate Security, Privacy, and Legal review processes, then route for Department Head, Finance, and Procurement approval."
   },
   "trace": [
    {
@@ -114,7 +117,7 @@
     "internal": false,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 4.3,
+    "duration_ms": 9.9,
     "output": {
      "found": true,
      "employee": {
@@ -146,14 +149,14 @@
     "type": "tool_call",
     "tool": "search_software_catalog",
     "inputs": {
-     "category": "Forms & Surveys",
      "product_name": "FormPilot",
-     "vendor_name": "ZetaForms"
+     "vendor_name": "ZetaForms",
+     "category": "Forms & Surveys"
     },
     "internal": false,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 7.0,
+    "duration_ms": 11.1,
     "output": {
      "matches": [],
      "match_kinds": [],
@@ -169,7 +172,7 @@
     "internal": false,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 19.9,
+    "duration_ms": 5.1,
     "output": {
      "vendor_name": "ZetaForms",
      "registry": null,
@@ -302,7 +305,7 @@
     "internal": false,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 0.2,
+    "duration_ms": 0.4,
     "output": {
      "reference_date": "2026-09-30",
      "data_classes": {
@@ -314,9 +317,7 @@
       "sensitive": true,
       "pii": true
      },
-     "missing_information": [
-      "vendor security assessment status (vendor-risk service unavailable)"
-     ],
+     "missing_information": [],
      "budget": {
       "status": "within",
       "cost_usd": 11000,
@@ -342,16 +343,12 @@
      "risk_flags": [
       "legal_review_required",
       "privacy_review_required",
-      "security_review_required",
-      "vendor_risk_unavailable"
+      "security_review_required"
      ],
      "reasons": {
       "security_review_required": [
        "customer pii access",
-       "vendor security assessment could not be verified"
-      ],
-      "vendor_risk_unavailable": [
-       "vendor-risk service no_record: No vendor-risk record for 'ZetaForms'"
+       "no vendor security assessment on record (vendor unknown to the risk service)"
       ],
       "privacy_review_required": [
        "tool will process employee or customer PII"
@@ -361,8 +358,8 @@
        "legal terms not approved/standard (status: unknown)"
       ]
      },
-     "suggested_recommendation_code": "escalate_manual_review",
-     "suggested_recommendation": "Escalate to manual review",
+     "suggested_recommendation_code": "route_for_reviews",
+     "suggested_recommendation": "Route for required reviews before approval",
      "evidence": [
       {
        "source": "budget_check",
@@ -411,9 +408,7 @@
       "sensitive": true,
       "pii": true
      },
-     "missing_information": [
-      "vendor security assessment status (vendor-risk service unavailable)"
-     ],
+     "missing_information": [],
      "budget": {
       "status": "within",
       "cost_usd": 11000,
@@ -439,16 +434,12 @@
      "risk_flags": [
       "legal_review_required",
       "privacy_review_required",
-      "security_review_required",
-      "vendor_risk_unavailable"
+      "security_review_required"
      ],
      "reasons": {
       "security_review_required": [
        "customer pii access",
-       "vendor security assessment could not be verified"
-      ],
-      "vendor_risk_unavailable": [
-       "vendor-risk service no_record: No vendor-risk record for 'ZetaForms'"
+       "no vendor security assessment on record (vendor unknown to the risk service)"
       ],
       "privacy_review_required": [
        "tool will process employee or customer PII"
@@ -458,8 +449,8 @@
        "legal terms not approved/standard (status: unknown)"
       ]
      },
-     "suggested_recommendation_code": "escalate_manual_review",
-     "suggested_recommendation": "Escalate to manual review",
+     "suggested_recommendation_code": "route_for_reviews",
+     "suggested_recommendation": "Route for required reviews before approval",
      "evidence": [
       {
        "source": "budget_check",
@@ -500,10 +491,10 @@
      "get_vendor_status",
      "run_policy_checks"
     ],
-    "input_tokens": 2322,
+    "input_tokens": 2369,
     "output_tokens": 100,
     "cache_read_input_tokens": 0,
-    "duration_ms": 1194.6
+    "duration_ms": 1643.7
    },
    {
     "type": "llm_call",
@@ -511,10 +502,10 @@
     "model": "gemini-3.1-flash-lite",
     "stop_reason": "stop",
     "tools_requested": [],
-    "input_tokens": 3459,
-    "output_tokens": 446,
+    "input_tokens": 3466,
+    "output_tokens": 408,
     "cache_read_input_tokens": 0,
-    "duration_ms": 2519.9
+    "duration_ms": 8601.0
    },
    {
     "type": "llm_call",
@@ -522,10 +513,10 @@
     "model": "gemini-3.1-flash-lite",
     "stop_reason": "stop",
     "tools_requested": [],
-    "input_tokens": 3601,
-    "output_tokens": 449,
+    "input_tokens": 3570,
+    "output_tokens": 343,
     "cache_read_input_tokens": 0,
-    "duration_ms": 46238.9
+    "duration_ms": 15033.4
    }
   ]
  }

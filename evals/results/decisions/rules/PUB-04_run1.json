@@ -15,6 +15,11 @@
    "reference": "Policy §4"
   },
   {
+   "source": "catalog_overlap",
+   "finding": "No approved catalog item matches this product, vendor or category",
+   "reference": "Policy §3"
+  },
+  {
    "source": "vendor_status",
    "finding": "Registry: New/Pending (None); risk service: ok, status not_completed (None); current=False",
    "reference": "Policy §5"
@@ -53,7 +58,7 @@
   ],
   "architecture": "rules",
   "model": null,
-  "latency_ms": 16.3,
+  "latency_ms": 63.6,
   "input_tokens": 0,
   "output_tokens": 0,
   "cache_read_input_tokens": 0,
@@ -69,7 +74,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 3.5,
+    "duration_ms": 16.2,
     "output": {
      "found": true,
      "employee": {
@@ -108,7 +113,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 2.9,
+    "duration_ms": 16.5,
     "output": {
      "matches": [],
      "match_kinds": [],
@@ -124,7 +129,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 9.7,
+    "duration_ms": 29.5,
     "output": {
      "vendor_name": "GrowthForge",
      "registry": {
@@ -178,7 +183,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 16.3,
+    "duration_ms": 63.1,
     "output": {
      "reference_date": "2026-09-30",
      "data_classes": {
@@ -249,6 +254,11 @@
        "source": "approval_thresholds",
        "finding": "Amount tier up to $25,000 requires Department Head, Finance, Procurement",
        "reference": "Policy §4"
+      },
+      {
+       "source": "catalog_overlap",
+       "finding": "No approved catalog item matches this product, vendor or category",
+       "reference": "Policy §3"
       },
       {
        "source": "vendor_status",

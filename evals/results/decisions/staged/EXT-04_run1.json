@@ -1,27 +1,27 @@
 {
  "request_id": "REQ-1010",
- "recommendation": "Evaluate existing tool before purchase",
- "recommendation_code": "evaluate_existing_tool_first",
- "summary": "The request is for training on SignFlow, which is already an approved, company-wide tool. The requester should confirm if this training is covered by the existing enterprise agreement before purchasing a separate package.",
+ "recommendation": "Proceed to standard approvals",
+ "recommendation_code": "approve_with_standard_approvals",
+ "summary": "The request is for a one-time professional services training pack for an existing approved tool (SignFlow). The cost is within the department budget, the vendor is approved, and it falls under the manager approval threshold.",
  "evidence": [
   {
-   "source": "search_software_catalog",
-   "finding": "SignFlow is already a company-wide approved tool (SW010).",
-   "reference": "Policy §3"
-  },
-  {
    "source": "get_requester_and_budget",
-   "finding": "Requested $950 is within the Finance department's available budget of $29,000.",
+   "finding": "Request is within the Finance department's available budget of $29,000.",
    "reference": "Policy §2"
   },
   {
+   "source": "search_software_catalog",
+   "finding": "SignFlow is an approved company-wide tool; this training pack is identified as a related_product.",
+   "reference": "Policy §3"
+  },
+  {
    "source": "get_vendor_status",
-   "finding": "Vendor SignFlow is approved with current security and legal assessments as of 2026-06-20.",
+   "finding": "Vendor SignFlow is approved with a current security assessment (2026-06-20).",
    "reference": "Policy §5"
   },
   {
    "source": "run_policy_checks",
-   "finding": "Request meets manager approval tier.",
+   "finding": "The $950 annual cost requires only Manager approval.",
    "reference": "Policy §4"
   }
  ],
@@ -32,7 +32,7 @@
  "risk_flags": [
   "existing_tool_overlap"
  ],
- "next_step": "The requester must verify if the requested training is excluded from the current company-wide SignFlow master agreement (PO-2513) and provide confirmation before proceeding to Manager approval.",
+ "next_step": "Submit the request for approval to the Finance Manager (Priya Shah).",
  "human_review_required": true,
  "telemetry": {
   "llm_calls": 4,
@@ -45,33 +45,33 @@
   ],
   "architecture": "staged",
   "model": "gemini-3.1-flash-lite",
-  "latency_ms": 13359.8,
-  "input_tokens": 13655,
-  "output_tokens": 1309,
+  "latency_ms": 29965.0,
+  "input_tokens": 13796,
+  "output_tokens": 1213,
   "cache_read_input_tokens": 0,
   "guardrail_corrections": [],
   "raw_model_output": {
-   "recommendation_code": "evaluate_existing_tool_first",
-   "summary": "The request is for training on SignFlow, which is already an approved, company-wide tool. The requester should confirm if this training is covered by the existing enterprise agreement before purchasing a separate package.",
+   "recommendation_code": "approve_with_standard_approvals",
+   "summary": "The request is for a one-time professional services training pack for an existing approved tool (SignFlow). The cost is within the department budget, the vendor is approved, and it falls under the manager approval threshold.",
    "evidence": [
     {
-     "source": "search_software_catalog",
-     "finding": "SignFlow is already a company-wide approved tool (SW010).",
-     "reference": "Policy §3"
-    },
-    {
      "source": "get_requester_and_budget",
-     "finding": "Requested $950 is within the Finance department's available budget of $29,000.",
+     "finding": "Request is within the Finance department's available budget of $29,000.",
      "reference": "Policy §2"
     },
     {
+     "source": "search_software_catalog",
+     "finding": "SignFlow is an approved company-wide tool; this training pack is identified as a related_product.",
+     "reference": "Policy §3"
+    },
+    {
      "source": "get_vendor_status",
-     "finding": "Vendor SignFlow is approved with current security and legal assessments as of 2026-06-20.",
+     "finding": "Vendor SignFlow is approved with a current security assessment (2026-06-20).",
      "reference": "Policy §5"
     },
     {
      "source": "run_policy_checks",
-     "finding": "Request meets manager approval tier.",
+     "finding": "The $950 annual cost requires only Manager approval.",
      "reference": "Policy §4"
     }
    ],
@@ -82,7 +82,7 @@
    "risk_flags": [
     "existing_tool_overlap"
    ],
-   "next_step": "The requester must verify if the requested training is excluded from the current company-wide SignFlow master agreement (PO-2513) and provide confirmation before proceeding to Manager approval."
+   "next_step": "Submit the request for approval to the Finance Manager (Priya Shah)."
   },
   "trace": [
    {
@@ -94,7 +94,7 @@
     "internal": false,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 538.5,
+    "duration_ms": 8.6,
     "output": {
      "found": true,
      "employee": {
@@ -126,18 +126,18 @@
     "type": "tool_call",
     "tool": "search_software_catalog",
     "inputs": {
+     "vendor_name": "SignFlow",
      "category": "Professional Services",
-     "product_name": "SignFlow Training Pack",
-     "vendor_name": "SignFlow"
+     "product_name": "SignFlow Training Pack"
     },
     "internal": false,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 4.5,
+    "duration_ms": 6.0,
     "output": {
      "matches": [
       {
-       "match_kind": "same_product",
+       "match_kind": "related_product",
        "software_id": "SW010",
        "product_name": "SignFlow",
        "category": "E-signature",
@@ -150,7 +150,7 @@
       }
      ],
      "match_kinds": [
-      "same_product"
+      "related_product"
      ],
      "purchase_history": [
       {
@@ -175,7 +175,7 @@
     "internal": false,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 30.9,
+    "duration_ms": 11.8,
     "output": {
      "vendor_name": "SignFlow",
      "registry": {
@@ -274,7 +274,7 @@
     "output": {
      "matches": [
       {
-       "match_kind": "same_product",
+       "match_kind": "related_product",
        "software_id": "SW010",
        "product_name": "SignFlow",
        "category": "E-signature",
@@ -287,7 +287,7 @@
       }
      ],
      "match_kinds": [
-      "same_product"
+      "related_product"
      ],
      "purchase_history": [
       {
@@ -366,7 +366,7 @@
     "internal": false,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 0.1,
+    "duration_ms": 0.3,
     "output": {
      "reference_date": "2026-09-30",
      "data_classes": {
@@ -399,11 +399,11 @@
      ],
      "reasons": {
       "existing_tool_overlap": [
-       "SignFlow (same_product, Approved, Company-wide)"
+       "SignFlow (related_product, Approved, Company-wide)"
       ]
      },
-     "suggested_recommendation_code": "evaluate_existing_tool_first",
-     "suggested_recommendation": "Evaluate existing tool before purchase",
+     "suggested_recommendation_code": "approve_with_standard_approvals",
+     "suggested_recommendation": "Proceed to standard approvals",
      "evidence": [
       {
        "source": "budget_check",
@@ -417,7 +417,7 @@
       },
       {
        "source": "catalog_overlap",
-       "finding": "Existing catalog items: SignFlow (same_product, Approved, Company-wide)",
+       "finding": "Existing catalog items: SignFlow (related_product, Approved, Company-wide)",
        "reference": "Policy §3"
       },
       {
@@ -473,11 +473,11 @@
      ],
      "reasons": {
       "existing_tool_overlap": [
-       "SignFlow (same_product, Approved, Company-wide)"
+       "SignFlow (related_product, Approved, Company-wide)"
       ]
      },
-     "suggested_recommendation_code": "evaluate_existing_tool_first",
-     "suggested_recommendation": "Evaluate existing tool before purchase",
+     "suggested_recommendation_code": "approve_with_standard_approvals",
+     "suggested_recommendation": "Proceed to standard approvals",
      "evidence": [
       {
        "source": "budget_check",
@@ -491,7 +491,7 @@
       },
       {
        "source": "catalog_overlap",
-       "finding": "Existing catalog items: SignFlow (same_product, Approved, Company-wide)",
+       "finding": "Existing catalog items: SignFlow (related_product, Approved, Company-wide)",
        "reference": "Policy §3"
       },
       {
@@ -547,11 +547,11 @@
      ],
      "reasons": {
       "existing_tool_overlap": [
-       "SignFlow (same_product, Approved, Company-wide)"
+       "SignFlow (related_product, Approved, Company-wide)"
       ]
      },
-     "suggested_recommendation_code": "evaluate_existing_tool_first",
-     "suggested_recommendation": "Evaluate existing tool before purchase",
+     "suggested_recommendation_code": "approve_with_standard_approvals",
+     "suggested_recommendation": "Proceed to standard approvals",
      "evidence": [
       {
        "source": "budget_check",
@@ -565,7 +565,7 @@
       },
       {
        "source": "catalog_overlap",
-       "finding": "Existing catalog items: SignFlow (same_product, Approved, Company-wide)",
+       "finding": "Existing catalog items: SignFlow (related_product, Approved, Company-wide)",
        "reference": "Policy §3"
       },
       {
@@ -592,10 +592,10 @@
      "get_vendor_status",
      "run_policy_checks"
     ],
-    "input_tokens": 2324,
+    "input_tokens": 2371,
     "output_tokens": 99,
     "cache_read_input_tokens": 0,
-    "duration_ms": 1644.6
+    "duration_ms": 1156.6
    },
    {
     "type": "llm_call",
@@ -603,10 +603,10 @@
     "model": "gemini-3.1-flash-lite",
     "stop_reason": "stop",
     "tools_requested": [],
-    "input_tokens": 3649,
-    "output_tokens": 355,
+    "input_tokens": 3696,
+    "output_tokens": 296,
     "cache_read_input_tokens": 0,
-    "duration_ms": 2621.1
+    "duration_ms": 9334.1
    },
    {
     "type": "llm_call",
@@ -614,10 +614,10 @@
     "model": "gemini-3.1-flash-lite",
     "stop_reason": "stop",
     "tools_requested": [],
-    "input_tokens": 3699,
-    "output_tokens": 460,
+    "input_tokens": 3686,
+    "output_tokens": 458,
     "cache_read_input_tokens": 0,
-    "duration_ms": 2797.6
+    "duration_ms": 10852.1
    },
    {
     "type": "llm_call",
@@ -625,10 +625,10 @@
     "model": "gemini-3.1-flash-lite",
     "stop_reason": "stop",
     "tools_requested": [],
-    "input_tokens": 3983,
-    "output_tokens": 395,
+    "input_tokens": 4043,
+    "output_tokens": 360,
     "cache_read_input_tokens": 0,
-    "duration_ms": 5720.7
+    "duration_ms": 8591.4
    }
   ]
  }

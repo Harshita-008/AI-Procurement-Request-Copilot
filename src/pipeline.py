@@ -5,7 +5,6 @@ import time
 
 from src.agents import single, staged
 from src.contracts import Architecture, ProcurementDecision, RunTelemetry
-from src.data_access import get_request
 from src.grounding import known_values
 from src.guardrail import apply_guardrail, rules_only_decision
 from src.llm import LLMError, make_llm
@@ -13,8 +12,9 @@ from src.rules.engine import PolicyResult
 from src.tools.context import ToolContext
 
 
-def run(request_id: str, architecture: Architecture = "single") -> ProcurementDecision:
-    request = get_request(request_id)
+def run(request: dict, architecture: Architecture = "single") -> ProcurementDecision:
+    """Analyse one request record (sample, synthetic or typed into the UI) with the chosen architecture."""
+    request_id = request["request_id"]
     ctx = ToolContext(request)
     llm = None
     started = time.perf_counter()

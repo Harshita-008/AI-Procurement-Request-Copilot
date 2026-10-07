@@ -104,6 +104,8 @@ Every correction is recorded in telemetry. The raw model draft is kept, so evalu
 - An empty `requested_integrations` list means "none needed", not missing information.
 - `data_access_level` is free text; it is mapped to policy classes by keyword (PII, source code, production, confidential, credentials). Blank or "unknown" is missing information; a value matching no keyword is "unclassified" and treated as sensitive until confirmed.
 - "New vendor" means `procurement_status` is not Approved, or the vendor is absent from the registry.
+- A vendor unknown to the risk service has a *missing* assessment: Security review is required (policy §5) and the finding says so. Only an HTTP error or unreachable service raises `vendor_risk_unavailable` and manual review; "no record" is never reported as an outage.
+- Catalog overlap is graded. A name match in the same category (or with no category given) is `same_product`, a possible duplicate, and is the only kind that forces "evaluate existing tool first". A name match in a different category is `related_product`: an add-on, service or training pack for an approved tool, surfaced as overlap but not blocking. Vendor-only and category-only matches are informational.
 - Legal review also triggers when registry legal terms are not Approved/Standard, even below $10k (policy §7, second bullet).
 - A security assessment is current for 365 days from `last_review_date` in the risk service; the registry date is only used for conflict detection.
 - Prompt injection alone does not reject a request; it routes it to manual review, and its instructions are ignored.

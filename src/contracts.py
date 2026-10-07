@@ -43,7 +43,4 @@ class ProcurementDecision(BaseModel):
 
 Architecture = Literal["single", "staged", "rules"]
 
-# Canonical approval names: Manager, Department Head, Procurement, Finance, CFO, Security, Privacy, Legal
-# Risk-flag taxonomy: existing_tool_overlap, budget_insufficient, security_review_required,
-# privacy_review_required, legal_review_required, vendor_review_expired, conflicting_vendor_evidence,
-# vendor_risk_unavailable, prompt_injection_detected, missing_information, llm_unavailable
+# Approval names: rules/engine.py APPROVAL_ORDER. Risk flags: recommendations.py KNOWN_FLAGS.

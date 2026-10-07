@@ -6,7 +6,7 @@ from src.tools.policy import lookup_policy, run_policy_checks
 from src.tools.requester import get_requester_and_budget
 from src.tools.vendor import get_vendor_status
 
-# Tools an agent must consult before its answer is accepted (reliability gate in agents/loop.py).
+# Tools an agent must call before its answer is accepted (gate in agents/loop.py).
 REQUIRED_TOOLS = {"get_requester_and_budget", "search_software_catalog", "get_vendor_status", "run_policy_checks"}
 
 TOOL_FUNCTIONS = {
@@ -17,7 +17,7 @@ TOOL_FUNCTIONS = {
     "lookup_policy": lookup_policy,
 }
 
-# All five are deterministic (data lookups, an HTTP call, and pure rules). None call an LLM.
+# All five are deterministic; none call a model.
 TOOL_SPECS = [
     {
         "name": "get_requester_and_budget",

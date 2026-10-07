@@ -1,7 +1,6 @@
-"""Any OpenAI-compatible endpoint (OpenAI, Gemini, OpenRouter, ...): function tools + JSON-schema answers.
+"""Any OpenAI-compatible endpoint (OpenAI, Gemini, OpenRouter, ...).
 
-Endpoints differ in what they accept. Features are requested in full and dropped one at a time
-when the endpoint rejects them, so a weaker or stricter provider still produces a usable answer.
+Optional request features are dropped one at a time if the endpoint rejects them.
 """
 from __future__ import annotations
 
@@ -151,7 +150,7 @@ class OpenAICompatLLM(BaseLLM):
         msg = response.raw
         turn = {"role": "assistant", "content": msg.content or ""}
         if msg.tool_calls:
-            # Replay tool calls verbatim: some providers (Gemini) attach extra fields that must be echoed back.
+            # Replay verbatim: some providers (Gemini) attach fields that must be echoed back.
             turn["tool_calls"] = [tc.model_dump(exclude_none=True) for tc in msg.tool_calls]
         return [turn]
 

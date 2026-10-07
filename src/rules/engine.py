@@ -94,8 +94,8 @@ def evaluate_policy(request: dict, requester: dict, catalog: dict, vendor: dict)
 
     sec = security_reasons(data, assessment)
     flag("security_review_required", sec)
-    if assessment["api_availability"] != "ok":
-        flag("vendor_risk_unavailable", [f"vendor-risk service {assessment['api_availability']}: {vendor['risk_service'].get('error')}"])
+    if assessment["api_availability"] == "unavailable":  # outage: never infer a status (policy §5)
+        flag("vendor_risk_unavailable", [f"vendor-risk service unavailable: {vendor['risk_service'].get('error')}"])
         missing.append("vendor security assessment status (vendor-risk service unavailable)")
     if assessment["assessment_expired"]:
         flag("vendor_review_expired", [f"last review {assessment['api_review_date']} is {assessment['days_since_api_review']} days before {REFERENCE_DATE}"])

@@ -1,9 +1,4 @@
-"""Central configuration.
-
-Nothing here is tied to one machine or one model: the policy reference date is read from the
-policy file, the model provider is picked from whichever API key is present, and every value
-can be overridden from .env (see .env.example).
-"""
+"""Central configuration. Reference date comes from the policy file; provider from the API key present."""
 from __future__ import annotations
 
 import os
@@ -28,12 +23,11 @@ def _reference_date_from_policy() -> date:
 REFERENCE_DATE = _reference_date_from_policy()
 REVIEW_VALID_DAYS = 365
 
-# Model provider presets. "sdk" says which adapter talks to it: the Anthropic SDK, or the OpenAI
-# client for any OpenAI-compatible endpoint. "model" is only a default; MODEL_NAME overrides it.
+# Provider presets. "sdk" picks the adapter; "model" is a default that MODEL_NAME overrides.
 PROVIDERS = {
     "anthropic": {"sdk": "anthropic", "model": "claude-opus-5-5", "key_env": "ANTHROPIC_API_KEY", "base_url": None},
     "openai": {"sdk": "openai", "model": "gpt-5-mini", "key_env": "OPENAI_API_KEY", "base_url": "https://api.openai.com/v1"},
-    # Gemini's OpenAI layer cannot combine a JSON response format with tools, so the answer is formatted in a separate call.
+    # Gemini cannot combine JSON response format with tools; the answer is formatted in a second call.
     "gemini": {"sdk": "openai", "model": "gemini-3.1-flash-lite", "key_env": "GEMINI_API_KEY",
                "base_url": "https://generativelanguage.googleapis.com/v1beta/openai/", "format_with_tools": False},
     "openrouter": {"sdk": "openai", "model": "nvidia/nemotron-3-super-120b-a12b:free", "key_env": "OPENROUTER_API_KEY",
@@ -67,5 +61,5 @@ MAX_OUTPUT_TOKENS = 8000
 
 VENDOR_RISK_BASE_URL = os.getenv("VENDOR_RISK_BASE_URL", "http://127.0.0.1:8001")
 VENDOR_API_TIMEOUT_SECONDS = 3.0
-# Start the local mock API automatically when it is unreachable. Set false to demo a real outage.
+# Auto-start the local mock API when it is down. Set false to demo an outage.
 AUTO_START_MOCK_API = os.getenv("AUTO_START_MOCK_API", "true").strip().lower() == "true"

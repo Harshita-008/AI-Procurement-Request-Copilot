@@ -12,7 +12,7 @@ APPROVAL_ALIASES = {
     "finance": "Finance", "cfo": "CFO", "security": "Security", "it security": "Security",
     "infosec": "Security", "privacy": "Privacy", "dpo": "Privacy", "legal": "Legal",
 }
-# Which deterministic evidence each tool's findings already cover (used to fill gaps, not duplicate).
+# Deterministic evidence each tool already covers, so gaps are filled without duplicates.
 EVIDENCE_COVERAGE = {
     "get_requester_and_budget": {"budget_check"},
     "search_software_catalog": {"catalog_overlap"},
@@ -47,10 +47,7 @@ def normalize_flag(flag: str) -> str:
 
 def apply_guardrail(draft: ModelDecision, policy: PolicyResult, tools_used: set[str],
                     known: set[str] | None = None) -> tuple[dict, list[str]]:
-    """Return (decision fields, list of corrections made to the model draft).
-
-    known: numbers the model legitimately saw (tool results, request, policy); None skips value checks.
-    """
+    """Return (decision fields, corrections). `known` = numbers the model saw; None skips value checks."""
     corrections: list[str] = []
 
     approvals = {normalize_approval(a) for a in draft.required_approvals}

@@ -15,6 +15,11 @@
    "reference": "Policy §4"
   },
   {
+   "source": "catalog_overlap",
+   "finding": "No approved catalog item matches this product, vendor or category",
+   "reference": "Policy §3"
+  },
+  {
    "source": "vendor_status",
    "finding": "Registry: New/Unknown (None); risk service: unavailable, status None (None); current=False",
    "reference": "Policy §5"
@@ -53,7 +58,7 @@
   ],
   "architecture": "rules",
   "model": null,
-  "latency_ms": 8.6,
+  "latency_ms": 61.2,
   "input_tokens": 0,
   "output_tokens": 0,
   "cache_read_input_tokens": 0,
@@ -69,7 +74,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 2.5,
+    "duration_ms": 11.9,
     "output": {
      "found": true,
      "employee": {
@@ -108,7 +113,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 3.0,
+    "duration_ms": 17.9,
     "output": {
      "matches": [],
      "match_kinds": [],
@@ -124,7 +129,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 2.9,
+    "duration_ms": 30.2,
     "output": {
      "vendor_name": "NimbusAI",
      "registry": {
@@ -170,7 +175,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 8.6,
+    "duration_ms": 60.9,
     "output": {
      "reference_date": "2026-09-30",
      "data_classes": {
@@ -214,7 +219,7 @@
      "reasons": {
       "security_review_required": [
        "confidential documents",
-       "vendor security assessment could not be verified"
+       "vendor security assessment could not be verified (vendor-risk service unavailable)"
       ],
       "vendor_risk_unavailable": [
        "vendor-risk service unavailable: HTTP 503: Upstream vendor assessment provider is temporarily unavailable."
@@ -236,6 +241,11 @@
        "source": "approval_thresholds",
        "finding": "Amount tier up to $25,000 requires Department Head, Finance, Procurement",
        "reference": "Policy §4"
+      },
+      {
+       "source": "catalog_overlap",
+       "finding": "No approved catalog item matches this product, vendor or category",
+       "reference": "Policy §3"
       },
       {
        "source": "vendor_status",

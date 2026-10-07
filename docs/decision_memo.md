@@ -11,22 +11,23 @@ Same 15 cases (6 public, 4 remaining starter requests, 5 synthetic hidden-style)
 | Metric | Single agent | Staged / 2-agent | Rules only |
 |---|---:|---:|---:|
 | Cases passing minimum checks | 45/45 | 45/45 | 45/45 |
-| Final recommendation correct | 41/45 | 41/45 | 42/45 |
-| Model's own recommendation correct (pre-guardrail) | 41/45 | 40/45 | – |
-| Evidence grounded: source / quoted values | 91% / 99% | 100% / 99% | – |
-| Avg latency | 12.8 s | 17.0 s | 31 ms |
+| Final recommendation correct | 44/45 | 44/45 | 45/45 |
+| Escalation / human review correct | 45/45 | 45/45 | 45/45 |
+| Model's own recommendation correct (pre-guardrail) | 44/45 | 43/45 | – |
+| Evidence grounded: source / quoted values | 95% / 99% | 100% / 99% | – |
+| Avg latency | 14.9 s | 20.2 s | 52 ms |
 | Avg LLM calls / tool calls | 3.0 / 4.0 | 4.0 / 4.0 | 0 / 4.0 |
 | Avg input + output tokens | 10.6k | 15.3k | 0 |
 
-Both agents missed the same case in every run (a training pack for an approved tool, routed to "evaluate existing tool"), and each under-routed an employee-PII request once in three runs. The guardrail added Security and Privacy each time, so outputs stayed compliant.
+The only miss is variance: each agent under-routed an employee-PII request once in three runs. The guardrail added Security and Privacy each time, so outputs stayed compliant.
 
 An earlier single-agent run on a weaker free model (`nvidia/nemotron-3-super-120b-a12b:free`, archived under `evals/results/`) scored 7/15 before the guardrail and 13/15 after it. Model quality moved results far more than architecture did.
 
 ## Trade-offs
 
-Staged improved one thing: source grounding reached 100%, because the reviewer sees only tool results and the analyst's pack. It cost one extra model call per request, 33% more latency, 44% more tokens, a second prompt to maintain and a hand-off where meaning can drift. It bought no accuracy.
+Staged improved one thing: source grounding reached 100%, because the reviewer sees only tool results and the analyst's pack. It cost one extra model call per request, 36% more latency, 44% more tokens, a second prompt to maintain and a hand-off where meaning can drift. It bought no accuracy.
 
-The single agent is simpler to debug: one trace, one prompt, one output. Its 91% source grounding reflects occasional evidence citing a tool it had not called; the guardrail drops such items and fills the gap deterministically.
+The single agent is simpler to debug: one trace, one prompt, one output. Its 95% source grounding reflects occasional evidence citing a tool it had not called; the guardrail drops such items and fills the gap deterministically.
 
 ## Risks and limitations
 

@@ -55,7 +55,7 @@
   ],
   "architecture": "rules",
   "model": null,
-  "latency_ms": 31.6,
+  "latency_ms": 33.4,
   "input_tokens": 0,
   "output_tokens": 0,
   "cache_read_input_tokens": 0,
@@ -71,7 +71,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 2.9,
+    "duration_ms": 10.4,
     "output": {
      "found": true,
      "employee": {
@@ -103,7 +103,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 3.0,
+    "duration_ms": 11.0,
     "output": {
      "matches": [
       {
@@ -134,7 +134,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 25.3,
+    "duration_ms": 11.1,
     "output": {
      "vendor_name": "DocSpace",
      "registry": {
@@ -188,7 +188,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 31.5,
+    "duration_ms": 33.2,
     "output": {
      "reference_date": "2026-09-30",
      "data_classes": {

@@ -1,9 +1,4 @@
-"""Shared package initialization for the assessment starter pack.
-
-A local .env file is loaded automatically and takes precedence over shell variables,
-so a stale key in the OS environment cannot shadow the project's .env. This keeps `python run_local.py`, the public eval
-runner, and direct module usage consistent.
-"""
+"""Package init: load .env, letting it override shell variables so a stale OS key cannot shadow it."""
 from __future__ import annotations
 
 from pathlib import Path

@@ -1,5 +1,7 @@
 # AI Procurement Request Copilot
 
+[![ci](https://github.com/Harshita-008/AI-Procurement-Request-Copilot/actions/workflows/ci.yml/badge.svg)](https://github.com/Harshita-008/AI-Procurement-Request-Copilot/actions/workflows/ci.yml)
+
 An internal copilot that reviews software purchase requests: it gathers evidence with tools, applies the procurement policy deterministically, and recommends the next action while every approval stays with a human.
 
 **Design principle:** AI interprets and recommends · code enforces thresholds and checks · humans approve.
@@ -23,12 +25,14 @@ The `rules` architecture and **Load saved evaluation result** work without any k
 Tests and evaluation:
 
 ```powershell
-python -m unittest discover -s tests                     # 68 unit tests, no key needed
+python -m unittest discover -s tests                     # 78 unit tests, no key needed
 python evals/run_public_evals.py --architecture single   # starter's 6 public cases
 python evals/run_public_evals.py --architecture staged
 python evals/run_comparison.py --runs 3 --resume         # 15 cases x 3 runs on single, staged, rules
 python evals/run_comparison.py --runs 3 --report-only --reguard   # re-apply guardrail to saved drafts, no model calls
 ```
+
+GitHub Actions runs the key-free part on every push: preflight, unit tests, the rules-only public evaluation and a re-score of the saved decisions (`.github/workflows/ci.yml`).
 
 ### Model provider
 
@@ -51,7 +55,9 @@ Request -> Understand need -> Gather evidence (5 tools) -> Deterministic policy 
         -> Model drafts recommendation -> Code guardrail -> Human review (UI actions are logged, never executed)
 ```
 
-The UI has three panels: **Request details**, **Evidence** (every finding names the tool it came from, with the full tool trace and the model's pre-guardrail draft), and **Recommendation + action** (approvals required, risk flags, missing information, next step, telemetry, reviewer buttons).
+The UI has three panels: **Request details**, **Evidence** (every finding names the tool it came from, with the full tool trace and the model's pre-guardrail draft), and **Recommendation + action** (approvals required, risk flags, missing information, next step, telemetry, reviewer buttons). The reviewer can also record an **override** with their own recommendation and a required reason; the log keeps both the copilot's and the reviewer's call.
+
+The sidebar takes either a **sample request** from the dataset or a **custom request** typed in on the spot, so new or adversarial cases can be tested live without editing data files. Blank fields are treated as missing information, and every field is handled as untrusted data.
 
 ![Overview: budget breach on a new vendor with customer PII](docs/screenshot_overview.png)
 
@@ -93,27 +99,38 @@ The brief's six edge cases are all in the test set, each with the deterministic 
 
 Same 15 cases on every architecture: the 6 public cases, the 4 remaining starter requests (conflict/expired vendor, exact duplicate, AI tool on customer PII, training pack) and 5 synthetic hidden-style cases (unknown vendor, injection in product name, >$25k over budget, employee PII, missing justification). Expectations in `evals/extended_cases.json`.
 
-Metrics: starter minimum checks, final recommendation correct, the model's **own** recommendation correct before the guardrail, share of model evidence grounded in tools it called, share whose quoted values verify against tool results, policy corrections the guardrail had to make, latency, LLM and tool calls, tokens, cost.
+The brief asks for five things to be evaluated; each maps to a row in the report, plus two rows that score the model on its own before the guardrail:
+
+| Brief criterion | Report row |
+|---|---|
+| Correct recommendation / next action | Final recommendation correct (the case's accepted codes) |
+| Evidence grounded in tool results | Model evidence grounded: source tool called, and quoted values present in tool results |
+| Policy and deterministic rules followed | Cases passing minimum checks (starter expectations), policy corrections the guardrail had to make |
+| Escalation / human review correct | Escalation / human review correct: human review flagged and every expected approver routed |
+| Latency, LLM and tool call count | Avg latency, LLM calls, tool calls, tokens |
+
+The model's own recommendation before the guardrail is scored separately, so the table shows what the agent got right versus what code had to fix.
 
 Results (15 cases × 3 runs, model `gemini-3.1-flash-lite`; full table and per-case detail in [evals/results/comparison_summary.md](evals/results/comparison_summary.md), every decision in `evals/results/decisions/`):
 
 | Metric | single | staged | rules |
 |---|---:|---:|---:|
 | Cases passing minimum checks | 45/45 | 45/45 | 45/45 |
-| Final recommendation correct | 41/45 | 41/45 | 42/45 |
-| Model's own recommendation correct (pre-guardrail) | 41/45 | 40/45 | – |
-| Model evidence grounded: source tool / quoted values | 91% / 99% | 100% / 99% | – |
-| Avg latency | 12.8 s | 17.0 s | 31 ms |
+| Final recommendation correct | 44/45 | 44/45 | 45/45 |
+| Escalation / human review correct | 45/45 | 45/45 | 45/45 |
+| Model's own recommendation correct (pre-guardrail) | 44/45 | 43/45 | – |
+| Model evidence grounded: source tool / quoted values | 95% / 99% | 100% / 99% | – |
+| Avg latency | 14.9 s | 20.2 s | 52 ms |
 | Avg LLM calls / tool calls | 3.0 / 4.0 | 4.0 / 4.0 | 0 / 4.0 |
 | Avg input / output tokens | 9.8k / 0.9k | 13.9k / 1.4k | 0 |
 
-Both agents miss the same judgment case in every run (a training pack for an approved tool, routed to "evaluate existing tool") and each mis-routed an employee-PII request once in three runs, which is the only run-to-run variance seen. The guardrail kept every output policy-compliant.
+The one remaining miss is run-to-run variance: each agent under-routed the employee-PII request once in three runs, and the guardrail added Security and Privacy both times, so the output stayed policy-compliant. An earlier version of the overlap rule treated any product-name match as a duplicate, which sent a training pack for an approved tool to "evaluate existing tool first" on every architecture; the rule now separates a same-category match (possible duplicate) from an add-on or service in another category, and the rules baseline is correct on all 15 cases.
 
 A first single-agent run on a weaker free model (`nvidia/nemotron-3-super-120b-a12b:free`, archived in `evals/results/archive_nemotron_single/`) scored 7/15 before the guardrail and 13/15 after it, with 2.8 corrections per case. Model quality mattered more than architecture; the deterministic layer is what keeps weak models safe.
 
 ## Ship decision
 
-**Single agent.** Identical minimum-check and recommendation scores to the staged variant over three runs, with one fewer model call, 25% lower latency and 31% fewer tokens. Full reasoning in [docs/decision_memo.md](docs/decision_memo.md).
+**Single agent.** Identical minimum-check and recommendation scores to the staged variant over three runs, with one fewer model call, 27% lower latency and 31% fewer tokens. Full reasoning in [docs/decision_memo.md](docs/decision_memo.md).
 
 ## Scaffold fixes
 

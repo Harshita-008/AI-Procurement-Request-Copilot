@@ -58,7 +58,7 @@
   ],
   "architecture": "rules",
   "model": null,
-  "latency_ms": 46.7,
+  "latency_ms": 62.4,
   "input_tokens": 0,
   "output_tokens": 0,
   "cache_read_input_tokens": 0,
@@ -74,7 +74,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 7.0,
+    "duration_ms": 13.6,
     "output": {
      "found": true,
      "employee": {
@@ -113,7 +113,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 6.8,
+    "duration_ms": 14.9,
     "output": {
      "matches": [],
      "match_kinds": [],
@@ -129,7 +129,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 32.2,
+    "duration_ms": 32.7,
     "output": {
      "vendor_name": "GrowthForge",
      "registry": {
@@ -183,7 +183,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 46.5,
+    "duration_ms": 62.2,
     "output": {
      "reference_date": "2026-09-30",
      "data_classes": {

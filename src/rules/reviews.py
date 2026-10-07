@@ -20,8 +20,10 @@ def security_reasons(data: dict, vendor: dict) -> list[str]:
             reasons.append("credentials/secrets access")
         elif cls == "unclassified":
             reasons.append(f"data-access level '{data['raw']}' is not a recognised class; treated as sensitive until confirmed")
-    if vendor["api_availability"] != "ok":
-        reasons.append("vendor security assessment could not be verified")
+    if vendor["api_availability"] == "unavailable":
+        reasons.append("vendor security assessment could not be verified (vendor-risk service unavailable)")
+    elif vendor["api_availability"] == "no_record":
+        reasons.append("no vendor security assessment on record (vendor unknown to the risk service)")
     elif not vendor["assessment_current"]:
         reasons.append("vendor security assessment is missing, expired or not completed")
     if vendor["conflict"]:

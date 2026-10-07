@@ -11,7 +11,7 @@ SENSITIVE_CLASSES = {
 }
 
 UNKNOWN_VALUES = {"", "unknown", "unspecified", "tbd", "n/a", "na", "not sure"}
-# Words that mark a low-sensitivity class. Anything recognised by neither list is "unclassified".
+# Low-sensitivity markers. Text matching neither list is "unclassified".
 INTERNAL_WORDS = ("internal", "public", "marketing", "general", "aggregate", "anonymi", "non sensitive", "low")
 
 # (keywords that must all appear, resulting class)

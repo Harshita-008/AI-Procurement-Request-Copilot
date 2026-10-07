@@ -125,6 +125,14 @@ class OverlapTests(unittest.TestCase):
         m = find_overlap("BrandBoard", "BrandBoard", "Design & Creative", self.CATALOG)
         self.assertEqual([x["match_kind"] for x in m], ["same_category"])
 
+    def test_add_on_in_another_category_is_related_not_duplicate(self):
+        m = find_overlap("TaskFlow Training Pack", "TaskFlow", "Professional Services", self.CATALOG)
+        self.assertEqual([x["match_kind"] for x in m], ["related_product"])
+
+    def test_missing_category_is_treated_as_same_product(self):
+        m = find_overlap("TaskFlow Pro", "TaskFlow", "", self.CATALOG)
+        self.assertEqual(m[0]["match_kind"], "same_product")
+
 
 class EngineTests(unittest.TestCase):
     def _run(self, request, vendor_registry=REGISTRY_OK, risk=RISK_OK, availability="ok", available=20000):
@@ -149,6 +157,27 @@ class EngineTests(unittest.TestCase):
         self.assertIn("vendor_risk_unavailable", r.risk_flags)
         self.assertIn("Security", r.required_approvals)
         self.assertEqual(r.suggested_recommendation_code, "escalate_manual_review")
+
+    def test_unknown_vendor_needs_security_review_but_is_not_an_outage(self):
+        req = {"product_name": "P", "vendor_name": "Newco", "annual_cost_usd": 11000, "user_count": 8,
+               "business_justification": "ok", "data_access_level": "internal_documents", "requested_integrations": []}
+        r = self._run(req, vendor_registry=None, availability="no_record", risk=None)
+        self.assertNotIn("vendor_risk_unavailable", r.risk_flags)
+        self.assertIn("security_review_required", r.risk_flags)
+        self.assertIn("legal_review_required", r.risk_flags)          # new vendor at or above $10k
+        self.assertEqual(r.missing_information, [])                   # the request itself is complete
+        self.assertEqual(r.suggested_recommendation_code, "route_for_reviews")
+
+    def test_related_product_does_not_force_evaluate_first(self):
+        req = {"product_name": "V Training", "vendor_name": "V", "category": "Professional Services", "annual_cost_usd": 950,
+               "user_count": 12, "business_justification": "ok", "data_access_level": "none", "requested_integrations": []}
+        requester = {"employee": {"department": "Finance"}, "budget": {"department": "Finance", "available_usd": 20000}}
+        catalog = {"matches": [{"match_kind": "related_product", "product_name": "V", "status": "Approved", "scope": "Company-wide"}]}
+        vendor = {"risk_service": {"availability": "ok", "error": None}, "assessment": assess_vendor(REGISTRY_OK, RISK_OK, "ok"),
+                  "untrusted_text_flags": []}
+        r = evaluate_policy(req, requester, catalog, vendor)
+        self.assertIn("existing_tool_overlap", r.risk_flags)          # still surfaced for the reviewer
+        self.assertEqual(r.suggested_recommendation_code, "approve_with_standard_approvals")
 
     def test_injection_and_missing_info(self):
         req = {"product_name": "P", "vendor_name": "V", "annual_cost_usd": None, "user_count": None,

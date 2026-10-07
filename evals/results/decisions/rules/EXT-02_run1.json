@@ -56,7 +56,7 @@
   ],
   "architecture": "rules",
   "model": null,
-  "latency_ms": 32.2,
+  "latency_ms": 61.8,
   "input_tokens": 0,
   "output_tokens": 0,
   "cache_read_input_tokens": 0,
@@ -72,7 +72,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 3.8,
+    "duration_ms": 14.7,
     "output": {
      "found": true,
      "employee": {
@@ -111,7 +111,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 3.8,
+    "duration_ms": 16.0,
     "output": {
      "matches": [
       {
@@ -153,7 +153,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 24.1,
+    "duration_ms": 30.1,
     "output": {
      "vendor_name": "SignalWatch",
      "registry": {
@@ -210,7 +210,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 32.1,
+    "duration_ms": 61.5,
     "output": {
      "reference_date": "2026-09-30",
      "data_classes": {

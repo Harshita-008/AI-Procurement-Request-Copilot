@@ -7,7 +7,8 @@ import streamlit as st
 
 from src.data_access import load_budgets, load_employees
 from ui import theme
-from ui.actions import ACTIONS, load_actions, log_action
+from src.recommendations import RECOMMENDATIONS
+from ui.actions import ACTIONS, OVERRIDE_ACTION, describe, load_actions, log_action
 
 FLAG_HELP = {
     "existing_tool_overlap": "An approved catalog tool overlaps this request (policy §3)",
@@ -28,6 +29,13 @@ def _money(value) -> str:
     return f"${value:,.0f}" if isinstance(value, (int, float)) else "not provided"
 
 
+def _integrations(value) -> str:
+    """None = field missing from the request; [] = explicitly none needed."""
+    if value is None:
+        return "not provided"
+    return ", ".join(value) or "none"
+
+
 def render_request(req: dict) -> None:
     st.markdown("### Request details")
     employee = next((e for e in load_employees() if e["employee_id"] == req["requester_id"]), None)
@@ -40,7 +48,7 @@ def render_request(req: dict) -> None:
         "Annual cost": _money(req.get("annual_cost_usd")),
         "Users / seats": req.get("user_count") if req.get("user_count") is not None else "not provided",
         "Data access": req.get("data_access_level") or "not provided",
-        "Integrations": ", ".join(req.get("requested_integrations") or []) or "none",
+        "Integrations": _integrations(req.get("requested_integrations")),
         "Urgency": req.get("urgency"),
     }
     st.markdown(theme.card(theme.key_values(rows)), unsafe_allow_html=True)
@@ -132,8 +140,20 @@ def render_recommendation(decision: dict, request_id: str, architecture: str) ->
         if col.button(text, key=f"{code}_{request_id}", width="stretch"):
             entry = log_action(request_id, architecture, code, reviewer, note, decision)
             st.toast(f"Logged: {text} by {entry['reviewer']}")
+    _render_override(decision, request_id, architecture, reviewer)
     history = load_actions(request_id)
     if history:
         with st.expander(f"Review history ({len(history)})"):
             for e in reversed(history):
-                st.markdown(f"`{e['timestamp']}` · **{ACTIONS.get(e['action'], e['action'])}** · {theme.esc(e['reviewer'])} · {theme.esc(e['note'] or '')}")
+                st.markdown(f"`{e['timestamp']}` · **{describe(e)}** · {theme.esc(e['reviewer'])} · {theme.esc(e['note'] or '')}")
+
+
+def _render_override(decision: dict, request_id: str, architecture: str, reviewer: str) -> None:
+    """Reviewer records their own recommendation; a reason is required."""
+    with st.expander("Disagree with the recommendation? Record an override"):
+        alternatives = {code: text for code, text in RECOMMENDATIONS.items() if code != decision.get("recommendation_code")}
+        chosen = st.selectbox("Your recommendation", list(alternatives), format_func=alternatives.get, key=f"override_code_{request_id}")
+        reason = st.text_input("Reason (required)", key=f"override_reason_{request_id}", placeholder="What the copilot missed or weighed wrongly")
+        if st.button("Log override", key=f"override_{request_id}", disabled=not reason.strip()):
+            entry = log_action(request_id, architecture, OVERRIDE_ACTION, reviewer, reason, decision, override_code=chosen)
+            st.toast(f"Logged: {describe(entry)} by {entry['reviewer']}")

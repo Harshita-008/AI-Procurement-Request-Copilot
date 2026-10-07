@@ -57,7 +57,7 @@
   ],
   "architecture": "rules",
   "model": null,
-  "latency_ms": 23.6,
+  "latency_ms": 49.0,
   "input_tokens": 0,
   "output_tokens": 0,
   "cache_read_input_tokens": 0,
@@ -73,7 +73,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 7.1,
+    "duration_ms": 9.7,
     "output": {
      "found": true,
      "employee": {
@@ -105,7 +105,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 7.5,
+    "duration_ms": 12.2,
     "output": {
      "matches": [
       {
@@ -147,7 +147,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 8.3,
+    "duration_ms": 26.3,
     "output": {
      "vendor_name": "TaskFlow",
      "registry": {
@@ -201,7 +201,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 23.4,
+    "duration_ms": 48.9,
     "output": {
      "reference_date": "2026-09-30",
      "data_classes": {

@@ -33,11 +33,11 @@ from src.solution import handle_request  # noqa: E402
 RESULTS_DIR = ROOT / "evals" / "results"
 DECISIONS_DIR = RESULTS_DIR / "decisions"
 
-# USD per million tokens: (input, output, cache read). Matched by model-id prefix; free models cost 0.
+# USD per million tokens (input, output, cache read), matched by model-id prefix.
 PRICES = {"claude-sonnet-5-5": (2.0, 10.0, 0.20), "claude-opus-5-5": (4.0, 20.0, 0.20), "claude-haiku-4-5": (1.0, 5.0, 0.10)}
 
 COLUMNS = ["case_id", "request_id", "title", "architecture", "run", "model", "passed_minimum_checks", "recommendation_code",
-           "recommendation_correct", "raw_recommendation_correct", "raw_grounding_ratio", "raw_value_grounding_ratio", "policy_corrections",
+           "recommendation_correct", "escalation_correct", "raw_recommendation_correct", "raw_grounding_ratio", "raw_value_grounding_ratio", "policy_corrections",
            "latency_ms", "llm_calls", "tool_calls", "input_tokens", "output_tokens", "cache_read_input_tokens",
            "cost_usd", "failures", "corrections"]
 
@@ -75,6 +75,7 @@ def score(decision: ProcurementDecision, case: dict, architecture: str, run: int
         "passed_minimum_checks": not failures,
         "recommendation_code": decision.recommendation_code,
         "recommendation_correct": grading.recommendation_correct(decision.recommendation_code, case["expectations"]),
+        "escalation_correct": grading.escalation_correct(decision, case["expectations"]),
         "raw_recommendation_correct": grading.recommendation_correct(raw_code, case["expectations"]) if raw_code else None,
         "raw_grounding_ratio": grading.raw_grounding_ratio(decision),
         "raw_value_grounding_ratio": grading.raw_value_grounding_ratio(decision),
@@ -143,6 +144,7 @@ def summary_markdown(rows: list[dict], architectures: list[str], case_count: int
     metrics = [
         ("Cases passing minimum checks", lambda rs: _rate(rs, "passed_minimum_checks")),
         ("Final recommendation correct", lambda rs: _rate(rs, "recommendation_correct")),
+        ("Escalation / human review correct", lambda rs: _rate(rs, "escalation_correct")),
         ("Model's own recommendation correct (pre-guardrail)", lambda rs: _rate(rs, "raw_recommendation_correct")),
         ("Model evidence grounded in tool results (source)", lambda rs: _mean(rs, "raw_grounding_ratio", 2)),
         ("Model evidence values verified against tool results", lambda rs: _mean(rs, "raw_value_grounding_ratio", 2)),

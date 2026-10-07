@@ -56,7 +56,7 @@
   ],
   "architecture": "rules",
   "model": null,
-  "latency_ms": 10.0,
+  "latency_ms": 62.8,
   "input_tokens": 0,
   "output_tokens": 0,
   "cache_read_input_tokens": 0,
@@ -72,7 +72,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 3.3,
+    "duration_ms": 11.7,
     "output": {
      "found": true,
      "employee": {
@@ -111,7 +111,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 3.1,
+    "duration_ms": 13.2,
     "output": {
      "matches": [
       {
@@ -154,7 +154,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 3.3,
+    "duration_ms": 36.7,
     "output": {
      "vendor_name": "BrandBoard",
      "registry": {
@@ -208,7 +208,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 9.9,
+    "duration_ms": 62.5,
     "output": {
      "reference_date": "2026-09-30",
      "data_classes": {

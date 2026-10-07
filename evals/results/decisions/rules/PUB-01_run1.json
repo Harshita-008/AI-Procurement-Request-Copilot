@@ -50,7 +50,7 @@
   ],
   "architecture": "rules",
   "model": null,
-  "latency_ms": 31.6,
+  "latency_ms": 32.7,
   "input_tokens": 0,
   "output_tokens": 0,
   "cache_read_input_tokens": 0,
@@ -66,7 +66,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 2.8,
+    "duration_ms": 9.4,
     "output": {
      "found": true,
      "employee": {
@@ -105,7 +105,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 2.8,
+    "duration_ms": 12.5,
     "output": {
      "matches": [
       {
@@ -147,7 +147,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 25.6,
+    "duration_ms": 10.2,
     "output": {
      "vendor_name": "SignFlow",
      "registry": {
@@ -201,7 +201,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 31.5,
+    "duration_ms": 32.6,
     "output": {
      "reference_date": "2026-09-30",
      "data_classes": {

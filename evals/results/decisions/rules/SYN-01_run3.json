@@ -1,7 +1,7 @@
 {
  "request_id": "SYN-2001",
- "recommendation": "Escalate to manual review",
- "recommendation_code": "escalate_manual_review",
+ "recommendation": "Route for required reviews before approval",
+ "recommendation_code": "route_for_reviews",
  "summary": "Deterministic policy evaluation only; no model interpretation.",
  "evidence": [
   {
@@ -38,16 +38,13 @@
   "Privacy",
   "Legal"
  ],
- "missing_information": [
-  "vendor security assessment status (vendor-risk service unavailable)"
- ],
+ "missing_information": [],
  "risk_flags": [
   "legal_review_required",
   "privacy_review_required",
-  "security_review_required",
-  "vendor_risk_unavailable"
+  "security_review_required"
  ],
- "next_step": "Procurement and Security to manually verify vendor status before any approval.",
+ "next_step": "Send the evidence package to Department Head, Procurement, Finance, Security, Privacy, Legal for review before any approval.",
  "human_review_required": true,
  "telemetry": {
   "llm_calls": 0,
@@ -60,7 +57,7 @@
   ],
   "architecture": "rules",
   "model": null,
-  "latency_ms": 44.9,
+  "latency_ms": 47.1,
   "input_tokens": 0,
   "output_tokens": 0,
   "cache_read_input_tokens": 0,
@@ -76,7 +73,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 12.8,
+    "duration_ms": 13.6,
     "output": {
      "found": true,
      "employee": {
@@ -115,7 +112,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 16.3,
+    "duration_ms": 13.6,
     "output": {
      "matches": [],
      "match_kinds": [],
@@ -131,7 +128,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 14.7,
+    "duration_ms": 19.0,
     "output": {
      "vendor_name": "ZetaForms",
      "registry": null,
@@ -169,7 +166,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 44.7,
+    "duration_ms": 46.9,
     "output": {
      "reference_date": "2026-09-30",
      "data_classes": {
@@ -181,9 +178,7 @@
       "sensitive": true,
       "pii": true
      },
-     "missing_information": [
-      "vendor security assessment status (vendor-risk service unavailable)"
-     ],
+     "missing_information": [],
      "budget": {
       "status": "within",
       "cost_usd": 11000,
@@ -209,16 +204,12 @@
      "risk_flags": [
       "legal_review_required",
       "privacy_review_required",
-      "security_review_required",
-      "vendor_risk_unavailable"
+      "security_review_required"
      ],
      "reasons": {
       "security_review_required": [
        "customer pii access",
-       "vendor security assessment could not be verified"
-      ],
-      "vendor_risk_unavailable": [
-       "vendor-risk service no_record: No vendor-risk record for 'ZetaForms'"
+       "no vendor security assessment on record (vendor unknown to the risk service)"
       ],
       "privacy_review_required": [
        "tool will process employee or customer PII"
@@ -228,8 +219,8 @@
        "legal terms not approved/standard (status: unknown)"
       ]
      },
-     "suggested_recommendation_code": "escalate_manual_review",
-     "suggested_recommendation": "Escalate to manual review",
+     "suggested_recommendation_code": "route_for_reviews",
+     "suggested_recommendation": "Route for required reviews before approval",
      "evidence": [
       {
        "source": "budget_check",

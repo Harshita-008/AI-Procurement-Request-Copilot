@@ -57,7 +57,7 @@
   ],
   "architecture": "rules",
   "model": null,
-  "latency_ms": 15.5,
+  "latency_ms": 62.6,
   "input_tokens": 0,
   "output_tokens": 0,
   "cache_read_input_tokens": 0,
@@ -73,7 +73,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 4.5,
+    "duration_ms": 12.2,
     "output": {
      "found": true,
      "employee": {
@@ -112,7 +112,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 3.5,
+    "duration_ms": 16.9,
     "output": {
      "matches": [
       {
@@ -154,7 +154,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 7.3,
+    "duration_ms": 32.3,
     "output": {
      "vendor_name": "NeuralDesk",
      "registry": {
@@ -208,7 +208,7 @@
     "internal": true,
     "cached": false,
     "ignored_inputs": [],
-    "duration_ms": 15.5,
+    "duration_ms": 62.4,
     "output": {
      "reference_date": "2026-09-30",
      "data_classes": {
