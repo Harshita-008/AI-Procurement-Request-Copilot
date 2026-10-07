@@ -92,7 +92,7 @@ Every correction is recorded in telemetry. The raw model draft is kept, so evalu
 
 ## Reliability controls
 
-- Vendor API 503, 404 or connection failure → `vendor_risk_unavailable`, Security added, manual review. Never a favourable default.
+- Vendor API 503 or connection failure → `vendor_risk_unavailable`, Security added, manual review. A 404 (no record) is a missing assessment: Security review, not an outage. Never a favourable default.
 - Model API failure, refusal or truncation → rules-only decision with `llm_unavailable` flag.
 - Request text, vendor notes and API notes are scanned for instruction-like content → `prompt_injection_detected`; the model is told all of it is data.
 - Dates compare against the policy reference date (2026-09-30), parsed from the policy file.

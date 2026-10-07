@@ -46,7 +46,7 @@ Set **one** API key in `.env`; the provider is detected from it. `LLM_PROVIDER` 
 | `OPENROUTER_API_KEY` | OpenRouter (free models) | `nvidia/nemotron-3-super-120b-a12b:free` |
 | `OPENAI_COMPAT_API_KEY` + `OPENAI_COMPAT_BASE_URL` + `MODEL_NAME` | any OpenAI-compatible endpoint | – |
 
-The result is policy-compliant on any of them: thresholds, budget, expiry, required fields and injection are decided in code, and the guardrail corrects whatever the model gets wrong. A weaker model shows more guardrail corrections in the UI and the evaluation; a stronger one fewer. If an endpoint rejects forced tool choice or strict JSON output, the adapter drops that feature and retries, so it degrades instead of failing. Free tiers are rate-limited; the comparison script saves every decision and supports `--resume`.
+The result is policy-compliant on any of them: thresholds, budget, expiry, required fields and injection are decided in code, and the guardrail corrects whatever the model gets wrong. A weaker model shows more guardrail corrections in the UI and the evaluation; a stronger one fewer. If an endpoint rejects forced tool choice or strict JSON output, the adapter drops that feature and retries, so it degrades instead of failing. Free tiers are rate-limited (Gemini allows 500 requests a day, and a full three-run comparison needs about 300), so the comparison script saves every decision and supports `--resume`; a run that hits the limit falls back to rules-only decisions flagged `llm_unavailable`, which the report shows as missing model output rather than as a pass.
 
 ## Product workflow
 
@@ -82,7 +82,7 @@ Diagrams, assumptions and reliability controls: [docs/architecture.md](docs/arch
 
 **Code guardrail (both architectures):** approvals and flags can never be weaker than policy; code-owned facts (budget, availability, expiry, conflict, missing information) are set by code; flags outside the taxonomy are dropped; evidence is dropped unless it names a tool the agent actually called **and** every number or date it quotes appears in a tool result, the request or the policy text; deterministic findings fill any evidence gap; `approve` is blocked when any blocking flag exists; over-budget forces the Finance exception route; mandatory reviews outrank "evaluate existing tool first"; human review is always required. Every correction is recorded, and the raw model draft is kept so evaluation can score the model on its own.
 
-**Reliability controls:** request fields normalised before any rule runs (numeric strings, blank values, string-typed integration lists); an unrecognised `data_access_level` is treated as unclassified (Security review plus a clarification item) rather than silently internal; vendor API 503/404/unreachable → `vendor_risk_unavailable` and manual review (the adapter starts the local mock API if it is down; set `AUTO_START_MOCK_API=false` to demo an outage); model failure → rules-only decision with `llm_unavailable`; request text and vendor notes scanned for injection; a completeness gate rejects any model answer produced before the four core tools were consulted; junk tool arguments from weaker models are ignored and logged.
+**Reliability controls:** request fields normalised before any rule runs (numeric strings, blank values, string-typed integration lists); an unrecognised `data_access_level` is treated as unclassified (Security review plus a clarification item) rather than silently internal; vendor API 503 or unreachable → `vendor_risk_unavailable` and manual review, while a vendor with no record is a missing assessment that needs Security review, never reported as an outage (the adapter starts the local mock API if it is down; set `AUTO_START_MOCK_API=false` to demo an outage); model failure → rules-only decision with `llm_unavailable`; request text and vendor notes scanned for injection; a completeness gate rejects any model answer produced before the four core tools were consulted; junk tool arguments from weaker models are ignored and logged.
 
 ## Evaluation
 
@@ -92,7 +92,7 @@ The brief's six edge cases are all in the test set, each with the deterministic 
 |---|---|---|
 | Incomplete / ambiguous request | PUB-05, SYN-05 | `missing_information` flag, clarification items from policy §1, `request_clarification` |
 | Existing tool already solves the need | PUB-02, EXT-03, SYN-02 | `existing_tool_overlap`, exact duplicate routed to `evaluate_existing_tool_first` |
-| Conflicting or expired vendor information | EXT-02, SYN-01 | `conflicting_vendor_evidence` / `vendor_review_expired`, Security added, manual review |
+| Conflicting or expired vendor information | EXT-02, SYN-01 | `conflicting_vendor_evidence` / `vendor_review_expired` → Security added, manual review; vendor unknown to registry and risk service → missing assessment, Security and Legal review |
 | Security-sensitive request or approval threshold | PUB-03, PUB-04, EXT-01, SYN-03, SYN-04 | Security / Privacy / Legal approvals, CFO above $25k, Finance exception when over budget |
 | Prompt injection inside business data | PUB-05, SYN-02 | `prompt_injection_detected`, instructions ignored, routed to manual review |
 | Tool / API unavailable | PUB-06 | `vendor_risk_unavailable`, never a favourable default, manual review |
@@ -157,5 +157,5 @@ Full list in [docs/architecture.md](docs/architecture.md#assumptions). The ones 
 - Value grounding checks that quoted numbers exist in the data the model saw, not that the reasoning linking them is right. Values the model derives itself (for example a computed expiry date) are dropped as unverifiable, which is conservative.
 - Data classification is keyword-based; unusual phrasing falls back to "unclassified" and asks for confirmation rather than guessing, so some clean requests may get an extra question.
 - Reviewer actions are logged to a local file; there is no identity, workflow engine or notification.
-- Fifteen cases, five of them written for this assessment, run three times each on one free model. That is enough to compare the two architectures, not to claim production accuracy; variance appeared on one case for each agent. A stronger model, more cases and more repeats are needed before production claims.
+- Fifteen cases, five of them written for this assessment, run three times each on one free model. That is enough to compare the two architectures, not to claim production accuracy; before the guardrail, variance appeared on one case for each agent. A stronger model, more cases and more repeats are needed before production claims.
 - The `evaluate existing tool` vs `approve` judgment for add-ons is accepted both ways for the seat add-on case (policy §3 supports both), see the note in `evals/extended_cases.json`.
