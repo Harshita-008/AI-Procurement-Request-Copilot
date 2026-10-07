@@ -31,7 +31,7 @@ The single agent is simpler to debug: one trace, one prompt, one output. Its 95%
 
 ## Risks and limitations
 
-- Three runs per architecture on one free model; one case flipped between runs for each agent. Before production: a stronger model and more repeats.
+- Fifteen cases (five self-written), three runs each, one free model; one case flipped between runs per agent. Enough to compare architectures, not to claim production accuracy.
 - "Approve" versus "evaluate existing tool first" for add-ons is a judgment call the policy supports both ways. The expectation set should be agreed with Procurement.
 - Grounding verifies source tools and quoted numbers, not the reasoning that links them.
 - Data classification is keyword-based.

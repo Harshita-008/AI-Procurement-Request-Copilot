@@ -157,5 +157,5 @@ Full list in [docs/architecture.md](docs/architecture.md#assumptions). The ones 
 - Value grounding checks that quoted numbers exist in the data the model saw, not that the reasoning linking them is right. Values the model derives itself (for example a computed expiry date) are dropped as unverifiable, which is conservative.
 - Data classification is keyword-based; unusual phrasing falls back to "unclassified" and asks for confirmation rather than guessing, so some clean requests may get an extra question.
 - Reviewer actions are logged to a local file; there is no identity, workflow engine or notification.
-- Three evaluation runs per architecture on one free model. Variance appeared on one case for each agent; a stronger model and more repeats are needed before production claims.
+- Fifteen cases, five of them written for this assessment, run three times each on one free model. That is enough to compare the two architectures, not to claim production accuracy; variance appeared on one case for each agent. A stronger model, more cases and more repeats are needed before production claims.
 - The `evaluate existing tool` vs `approve` judgment for add-ons is accepted both ways for the seat add-on case (policy §3 supports both), see the note in `evals/extended_cases.json`.
