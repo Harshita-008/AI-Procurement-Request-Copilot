@@ -1,0 +1,560 @@
+{
+ "request_id": "SYN-2003",
+ "recommendation": "Escalate for Finance budget exception",
+ "recommendation_code": "escalate_budget_exception",
+ "summary": "The request exceeds the department software budget and overlaps with an existing company-wide MetricLoop subscription, requiring a budget exception and business justification.",
+ "evidence": [
+  {
+   "source": "get_requester_and_budget",
+   "finding": "Request cost $30,000 exceeds available budget $26,000.",
+   "reference": "Policy §2"
+  },
+  {
+   "source": "search_software_catalog",
+   "finding": "MetricLoop is already approved as a company-wide tool.",
+   "reference": "Policy §3"
+  },
+  {
+   "source": "run_policy_checks",
+   "finding": "Approval required: Department Head, Procurement, Finance, CFO.",
+   "reference": "Policy §4"
+  },
+  {
+   "source": "get_vendor_status",
+   "finding": "Vendor security and legal status is current (last review 2026-05-10).",
+   "reference": "Policy §5"
+  }
+ ],
+ "required_approvals": [
+  "Department Head",
+  "Procurement",
+  "Finance",
+  "CFO"
+ ],
+ "missing_information": [],
+ "risk_flags": [
+  "budget_insufficient",
+  "existing_tool_overlap"
+ ],
+ "next_step": "Submit for Finance budget exception review and provide business justification for the overlap to your Department Head.",
+ "human_review_required": true,
+ "telemetry": {
+  "llm_calls": 3,
+  "tool_calls": 4,
+  "tool_names": [
+   "get_requester_and_budget",
+   "search_software_catalog",
+   "get_vendor_status",
+   "run_policy_checks"
+  ],
+  "architecture": "single",
+  "model": "gemini-3.1-flash-lite",
+  "latency_ms": 5260.0,
+  "input_tokens": 9660,
+  "output_tokens": 850,
+  "cache_read_input_tokens": 0,
+  "guardrail_corrections": [
+   "dropped model-added missing information (policy §1 lists none): Justification for why existing MetricLoop subscription capacity cannot meet the requirement."
+  ],
+  "raw_model_output": {
+   "recommendation_code": "escalate_budget_exception",
+   "summary": "The request exceeds the department software budget and overlaps with an existing company-wide MetricLoop subscription, requiring a budget exception and business justification.",
+   "evidence": [
+    {
+     "source": "get_requester_and_budget",
+     "finding": "Request cost $30,000 exceeds available budget $26,000.",
+     "reference": "Policy §2"
+    },
+    {
+     "source": "search_software_catalog",
+     "finding": "MetricLoop is already approved as a company-wide tool.",
+     "reference": "Policy §3"
+    },
+    {
+     "source": "run_policy_checks",
+     "finding": "Approval required: Department Head, Procurement, Finance, CFO.",
+     "reference": "Policy §4"
+    },
+    {
+     "source": "get_vendor_status",
+     "finding": "Vendor security and legal status is current (last review 2026-05-10).",
+     "reference": "Policy §5"
+    }
+   ],
+   "required_approvals": [
+    "Department Head",
+    "Finance",
+    "CFO",
+    "Procurement"
+   ],
+   "missing_information": [
+    "Justification for why existing MetricLoop subscription capacity cannot meet the requirement."
+   ],
+   "risk_flags": [
+    "budget_insufficient",
+    "existing_tool_overlap"
+   ],
+   "next_step": "Submit for Finance budget exception review and provide business justification for the overlap to your Department Head."
+  },
+  "trace": [
+   {
+    "type": "tool_call",
+    "tool": "get_requester_and_budget",
+    "inputs": {
+     "requester_id": "E002"
+    },
+    "internal": false,
+    "cached": false,
+    "ignored_inputs": [],
+    "duration_ms": 5.1,
+    "output": {
+     "found": true,
+     "employee": {
+      "employee_id": "E002",
+      "name": "Arjun Mehta",
+      "department": "Engineering",
+      "manager_id": "E008",
+      "level": "IC5",
+      "country": "India"
+     },
+     "manager": {
+      "employee_id": "E008",
+      "name": "Maya Rao",
+      "department": "Engineering",
+      "manager_id": "E010",
+      "level": "Director",
+      "country": "India"
+     },
+     "budget": {
+      "department": "Engineering",
+      "annual_software_budget_usd": 300000,
+      "committed_usd": 274000,
+      "available_usd": 26000
+     },
+     "note": null
+    }
+   },
+   {
+    "type": "tool_call",
+    "tool": "search_software_catalog",
+    "inputs": {
+     "category": "Analytics / BI",
+     "vendor_name": "MetricLoop",
+     "product_name": "MetricLoop Warehouse Tier"
+    },
+    "internal": false,
+    "cached": false,
+    "ignored_inputs": [],
+    "duration_ms": 4.9,
+    "output": {
+     "matches": [
+      {
+       "match_kind": "same_product",
+       "software_id": "SW006",
+       "product_name": "MetricLoop",
+       "category": "Analytics / BI",
+       "vendor_name": "MetricLoop",
+       "status": "Approved",
+       "annual_cost_usd": 52000,
+       "licensed_seats": 55,
+       "scope": "Company-wide",
+       "notes": "Dashboards and BI"
+      }
+     ],
+     "match_kinds": [
+      "same_product"
+     ],
+     "purchase_history": []
+    }
+   },
+   {
+    "type": "tool_call",
+    "tool": "get_vendor_status",
+    "inputs": {
+     "vendor_name": "MetricLoop"
+    },
+    "internal": false,
+    "cached": false,
+    "ignored_inputs": [],
+    "duration_ms": 27.7,
+    "output": {
+     "vendor_name": "MetricLoop",
+     "registry": {
+      "vendor_id": "V006",
+      "vendor_name": "MetricLoop",
+      "procurement_status": "Approved",
+      "security_status": "Approved",
+      "security_review_date": "2026-05-10",
+      "legal_terms_status": "Approved",
+      "notes": "Standard vendor"
+     },
+     "risk_service": {
+      "availability": "ok",
+      "record": {
+       "vendor_name": "MetricLoop",
+       "risk_level": "low",
+       "security_review_status": "approved",
+       "last_review_date": "2026-05-10",
+       "processes_personal_data": true,
+       "stores_data_outside_region": false,
+       "notes": "Current assessment."
+      },
+      "error": null
+     },
+     "assessment": {
+      "is_new_vendor": false,
+      "registry_procurement_status": "Approved",
+      "registry_security_status": "Approved",
+      "registry_review_date": "2026-05-10",
+      "registry_legal_terms_status": "Approved",
+      "api_availability": "ok",
+      "api_security_status": "approved",
+      "api_review_date": "2026-05-10",
+      "api_risk_level": "low",
+      "processes_personal_data": true,
+      "stores_data_outside_region": false,
+      "days_since_api_review": 143,
+      "assessment_current": true,
+      "assessment_expired": false,
+      "conflict": false,
+      "conflict_reasons": [],
+      "reference_date": "2026-09-30"
+     },
+     "untrusted_text_flags": []
+    }
+   },
+   {
+    "type": "tool_call",
+    "tool": "get_requester_and_budget",
+    "inputs": {
+     "requester_id": "E002"
+    },
+    "internal": true,
+    "cached": true,
+    "ignored_inputs": [],
+    "duration_ms": 0.0,
+    "output": {
+     "found": true,
+     "employee": {
+      "employee_id": "E002",
+      "name": "Arjun Mehta",
+      "department": "Engineering",
+      "manager_id": "E008",
+      "level": "IC5",
+      "country": "India"
+     },
+     "manager": {
+      "employee_id": "E008",
+      "name": "Maya Rao",
+      "department": "Engineering",
+      "manager_id": "E010",
+      "level": "Director",
+      "country": "India"
+     },
+     "budget": {
+      "department": "Engineering",
+      "annual_software_budget_usd": 300000,
+      "committed_usd": 274000,
+      "available_usd": 26000
+     },
+     "note": null
+    }
+   },
+   {
+    "type": "tool_call",
+    "tool": "search_software_catalog",
+    "inputs": {
+     "product_name": "MetricLoop Warehouse Tier",
+     "vendor_name": "MetricLoop",
+     "category": "Analytics / BI"
+    },
+    "internal": true,
+    "cached": true,
+    "ignored_inputs": [],
+    "duration_ms": 0.0,
+    "output": {
+     "matches": [
+      {
+       "match_kind": "same_product",
+       "software_id": "SW006",
+       "product_name": "MetricLoop",
+       "category": "Analytics / BI",
+       "vendor_name": "MetricLoop",
+       "status": "Approved",
+       "annual_cost_usd": 52000,
+       "licensed_seats": 55,
+       "scope": "Company-wide",
+       "notes": "Dashboards and BI"
+      }
+     ],
+     "match_kinds": [
+      "same_product"
+     ],
+     "purchase_history": []
+    }
+   },
+   {
+    "type": "tool_call",
+    "tool": "get_vendor_status",
+    "inputs": {
+     "vendor_name": "MetricLoop"
+    },
+    "internal": true,
+    "cached": true,
+    "ignored_inputs": [],
+    "duration_ms": 0.0,
+    "output": {
+     "vendor_name": "MetricLoop",
+     "registry": {
+      "vendor_id": "V006",
+      "vendor_name": "MetricLoop",
+      "procurement_status": "Approved",
+      "security_status": "Approved",
+      "security_review_date": "2026-05-10",
+      "legal_terms_status": "Approved",
+      "notes": "Standard vendor"
+     },
+     "risk_service": {
+      "availability": "ok",
+      "record": {
+       "vendor_name": "MetricLoop",
+       "risk_level": "low",
+       "security_review_status": "approved",
+       "last_review_date": "2026-05-10",
+       "processes_personal_data": true,
+       "stores_data_outside_region": false,
+       "notes": "Current assessment."
+      },
+      "error": null
+     },
+     "assessment": {
+      "is_new_vendor": false,
+      "registry_procurement_status": "Approved",
+      "registry_security_status": "Approved",
+      "registry_review_date": "2026-05-10",
+      "registry_legal_terms_status": "Approved",
+      "api_availability": "ok",
+      "api_security_status": "approved",
+      "api_review_date": "2026-05-10",
+      "api_risk_level": "low",
+      "processes_personal_data": true,
+      "stores_data_outside_region": false,
+      "days_since_api_review": 143,
+      "assessment_current": true,
+      "assessment_expired": false,
+      "conflict": false,
+      "conflict_reasons": [],
+      "reference_date": "2026-09-30"
+     },
+     "untrusted_text_flags": []
+    }
+   },
+   {
+    "type": "tool_call",
+    "tool": "run_policy_checks",
+    "inputs": {},
+    "internal": false,
+    "cached": false,
+    "ignored_inputs": [],
+    "duration_ms": 0.3,
+    "output": {
+     "reference_date": "2026-09-30",
+     "data_classes": {
+      "raw": "internal_analytics",
+      "known": true,
+      "classes": [
+       "internal"
+      ],
+      "sensitive": false,
+      "pii": false
+     },
+     "missing_information": [],
+     "budget": {
+      "status": "exceeds",
+      "cost_usd": 30000,
+      "available_usd": 26000,
+      "shortfall_usd": 4000.0
+     },
+     "approval_tier": {
+      "tier": "above $25,000",
+      "approvals": [
+       "Department Head",
+       "Finance",
+       "CFO",
+       "Procurement"
+      ]
+     },
+     "required_approvals": [
+      "Department Head",
+      "Procurement",
+      "Finance",
+      "CFO"
+     ],
+     "risk_flags": [
+      "budget_insufficient",
+      "existing_tool_overlap"
+     ],
+     "reasons": {
+      "budget_insufficient": [
+       "cost $30,000 exceeds available $26,000"
+      ],
+      "existing_tool_overlap": [
+       "MetricLoop (same_product, Approved, Company-wide)"
+      ]
+     },
+     "suggested_recommendation_code": "escalate_budget_exception",
+     "suggested_recommendation": "Escalate for Finance budget exception",
+     "evidence": [
+      {
+       "source": "budget_check",
+       "finding": "Budget exceeds: cost 30000 vs available 26000 USD for Engineering",
+       "reference": "Policy §2"
+      },
+      {
+       "source": "approval_thresholds",
+       "finding": "Amount tier above $25,000 requires Department Head, Finance, CFO, Procurement",
+       "reference": "Policy §4"
+      },
+      {
+       "source": "catalog_overlap",
+       "finding": "Existing catalog items: MetricLoop (same_product, Approved, Company-wide)",
+       "reference": "Policy §3"
+      },
+      {
+       "source": "vendor_status",
+       "finding": "Registry: Approved/Approved (2026-05-10); risk service: ok, status approved (2026-05-10); current=True",
+       "reference": "Policy §5"
+      },
+      {
+       "source": "data_classification",
+       "finding": "Data access 'internal_analytics' -> classes ['internal'], sensitive=False",
+       "reference": "Policy §5-6"
+      }
+     ]
+    }
+   },
+   {
+    "type": "tool_call",
+    "tool": "run_policy_checks",
+    "inputs": {},
+    "internal": true,
+    "cached": true,
+    "ignored_inputs": [],
+    "duration_ms": 0.0,
+    "output": {
+     "reference_date": "2026-09-30",
+     "data_classes": {
+      "raw": "internal_analytics",
+      "known": true,
+      "classes": [
+       "internal"
+      ],
+      "sensitive": false,
+      "pii": false
+     },
+     "missing_information": [],
+     "budget": {
+      "status": "exceeds",
+      "cost_usd": 30000,
+      "available_usd": 26000,
+      "shortfall_usd": 4000.0
+     },
+     "approval_tier": {
+      "tier": "above $25,000",
+      "approvals": [
+       "Department Head",
+       "Finance",
+       "CFO",
+       "Procurement"
+      ]
+     },
+     "required_approvals": [
+      "Department Head",
+      "Procurement",
+      "Finance",
+      "CFO"
+     ],
+     "risk_flags": [
+      "budget_insufficient",
+      "existing_tool_overlap"
+     ],
+     "reasons": {
+      "budget_insufficient": [
+       "cost $30,000 exceeds available $26,000"
+      ],
+      "existing_tool_overlap": [
+       "MetricLoop (same_product, Approved, Company-wide)"
+      ]
+     },
+     "suggested_recommendation_code": "escalate_budget_exception",
+     "suggested_recommendation": "Escalate for Finance budget exception",
+     "evidence": [
+      {
+       "source": "budget_check",
+       "finding": "Budget exceeds: cost 30000 vs available 26000 USD for Engineering",
+       "reference": "Policy §2"
+      },
+      {
+       "source": "approval_thresholds",
+       "finding": "Amount tier above $25,000 requires Department Head, Finance, CFO, Procurement",
+       "reference": "Policy §4"
+      },
+      {
+       "source": "catalog_overlap",
+       "finding": "Existing catalog items: MetricLoop (same_product, Approved, Company-wide)",
+       "reference": "Policy §3"
+      },
+      {
+       "source": "vendor_status",
+       "finding": "Registry: Approved/Approved (2026-05-10); risk service: ok, status approved (2026-05-10); current=True",
+       "reference": "Policy §5"
+      },
+      {
+       "source": "data_classification",
+       "finding": "Data access 'internal_analytics' -> classes ['internal'], sensitive=False",
+       "reference": "Policy §5-6"
+      }
+     ]
+    }
+   },
+   {
+    "type": "llm_call",
+    "label": "single_agent",
+    "model": "gemini-3.1-flash-lite",
+    "stop_reason": "tool_calls",
+    "tools_requested": [
+     "get_requester_and_budget",
+     "search_software_catalog",
+     "get_vendor_status",
+     "run_policy_checks"
+    ],
+    "input_tokens": 2322,
+    "output_tokens": 100,
+    "cache_read_input_tokens": 0,
+    "duration_ms": 1162.1
+   },
+   {
+    "type": "llm_call",
+    "label": "single_agent",
+    "model": "gemini-3.1-flash-lite",
+    "stop_reason": "stop",
+    "tools_requested": [],
+    "input_tokens": 3647,
+    "output_tokens": 346,
+    "cache_read_input_tokens": 0,
+    "duration_ms": 1922.4
+   },
+   {
+    "type": "llm_call",
+    "label": "single_agent_format",
+    "model": "gemini-3.1-flash-lite",
+    "stop_reason": "stop",
+    "tools_requested": [],
+    "input_tokens": 3691,
+    "output_tokens": 404,
+    "cache_read_input_tokens": 0,
+    "duration_ms": 2133.6
+   }
+  ]
+ }
+}

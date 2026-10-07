@@ -1,0 +1,7 @@
+case_id,request_id,architecture,passed_minimum_checks,latency_ms,llm_calls,tool_calls,model,recommendation_code,guardrail_corrections,failures
+PUB-01,REQ-1001,staged,True,25646.1,4,4,gemini-3.1-flash-lite,evaluate_existing_tool_first,1,
+PUB-02,REQ-1002,staged,True,19774.2,4,4,gemini-3.1-flash-lite,route_for_reviews,0,
+PUB-03,REQ-1003,staged,True,28175.9,4,4,gemini-3.1-flash-lite,route_for_reviews,0,
+PUB-04,REQ-1005,staged,True,24949.0,4,4,gemini-3.1-flash-lite,escalate_budget_exception,2,
+PUB-05,REQ-1006,staged,True,25170.6,4,4,gemini-3.1-flash-lite,request_clarification,0,
+PUB-06,REQ-1009,staged,True,63658.3,4,4,gemini-3.1-flash-lite,escalate_manual_review,1,

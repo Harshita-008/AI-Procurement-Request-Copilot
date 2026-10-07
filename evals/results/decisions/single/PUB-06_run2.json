@@ -1,0 +1,533 @@
+{
+ "request_id": "REQ-1009",
+ "recommendation": "Escalate to manual review",
+ "recommendation_code": "escalate_manual_review",
+ "summary": "The request is within budget but requires manual review because the vendor risk service is unreachable and the tool will process confidential documents.",
+ "evidence": [
+  {
+   "source": "get_requester_and_budget",
+   "finding": "Request is within budget: $15,000 against $29,000 available.",
+   "reference": "Policy §2"
+  },
+  {
+   "source": "get_vendor_status",
+   "finding": "Vendor risk service returned HTTP 503; security status and legal terms are unknown.",
+   "reference": "Policy §5, §10"
+  },
+  {
+   "source": "run_policy_checks",
+   "finding": "Confidential documents data access class triggers mandatory Security and Legal review.",
+   "reference": "Policy §5, §6, §7"
+  },
+  {
+   "source": "catalog_overlap",
+   "finding": "No approved catalog item matches this product, vendor or category",
+   "reference": "Policy §3"
+  }
+ ],
+ "required_approvals": [
+  "Department Head",
+  "Procurement",
+  "Finance",
+  "Security",
+  "Legal"
+ ],
+ "missing_information": [
+  "vendor security assessment status (vendor-risk service unavailable)"
+ ],
+ "risk_flags": [
+  "legal_review_required",
+  "security_review_required",
+  "vendor_risk_unavailable"
+ ],
+ "next_step": "Escalate to Security and Legal for manual assessment, then route for Finance and Department Head approval.",
+ "human_review_required": true,
+ "telemetry": {
+  "llm_calls": 3,
+  "tool_calls": 4,
+  "tool_names": [
+   "get_requester_and_budget",
+   "search_software_catalog",
+   "get_vendor_status",
+   "run_policy_checks"
+  ],
+  "architecture": "single",
+  "model": "gemini-3.1-flash-lite",
+  "latency_ms": 53818.0,
+  "input_tokens": 9380,
+  "output_tokens": 824,
+  "cache_read_input_tokens": 0,
+  "guardrail_corrections": [
+   "dropped model-added missing information (policy §1 lists none): Verified legal terms",
+   "added deterministic evidence: catalog_overlap"
+  ],
+  "raw_model_output": {
+   "recommendation_code": "escalate_manual_review",
+   "summary": "The request is within budget but requires manual review because the vendor risk service is unreachable and the tool will process confidential documents.",
+   "evidence": [
+    {
+     "source": "get_requester_and_budget",
+     "finding": "Request is within budget: $15,000 against $29,000 available.",
+     "reference": "Policy §2"
+    },
+    {
+     "source": "get_vendor_status",
+     "finding": "Vendor risk service returned HTTP 503; security status and legal terms are unknown.",
+     "reference": "Policy §5, §10"
+    },
+    {
+     "source": "run_policy_checks",
+     "finding": "Confidential documents data access class triggers mandatory Security and Legal review.",
+     "reference": "Policy §5, §6, §7"
+    }
+   ],
+   "required_approvals": [
+    "Department Head",
+    "Finance",
+    "Procurement",
+    "Security",
+    "Legal"
+   ],
+   "missing_information": [
+    "Verified vendor security assessment",
+    "Verified legal terms"
+   ],
+   "risk_flags": [
+    "security_review_required",
+    "legal_review_required",
+    "vendor_risk_unavailable"
+   ],
+   "next_step": "Escalate to Security and Legal for manual assessment, then route for Finance and Department Head approval."
+  },
+  "trace": [
+   {
+    "type": "tool_call",
+    "tool": "get_requester_and_budget",
+    "inputs": {
+     "requester_id": "E004"
+    },
+    "internal": false,
+    "cached": false,
+    "ignored_inputs": [],
+    "duration_ms": 7.9,
+    "output": {
+     "found": true,
+     "employee": {
+      "employee_id": "E004",
+      "name": "Noah Williams",
+      "department": "Finance",
+      "manager_id": "E006",
+      "level": "IC4",
+      "country": "United Kingdom"
+     },
+     "manager": {
+      "employee_id": "E006",
+      "name": "Priya Shah",
+      "department": "Finance",
+      "manager_id": "E010",
+      "level": "Director",
+      "country": "India"
+     },
+     "budget": {
+      "department": "Finance",
+      "annual_software_budget_usd": 90000,
+      "committed_usd": 61000,
+      "available_usd": 29000
+     },
+     "note": null
+    }
+   },
+   {
+    "type": "tool_call",
+    "tool": "search_software_catalog",
+    "inputs": {
+     "vendor_name": "NimbusAI",
+     "product_name": "NimbusAI Contract Reviewer",
+     "category": "Legal AI"
+    },
+    "internal": false,
+    "cached": false,
+    "ignored_inputs": [],
+    "duration_ms": 5.7,
+    "output": {
+     "matches": [],
+     "match_kinds": [],
+     "purchase_history": []
+    }
+   },
+   {
+    "type": "tool_call",
+    "tool": "get_vendor_status",
+    "inputs": {
+     "vendor_name": "NimbusAI"
+    },
+    "internal": false,
+    "cached": false,
+    "ignored_inputs": [],
+    "duration_ms": 20.5,
+    "output": {
+     "vendor_name": "NimbusAI",
+     "registry": {
+      "vendor_id": "V013",
+      "vendor_name": "NimbusAI",
+      "procurement_status": "New",
+      "security_status": "Unknown",
+      "security_review_date": null,
+      "legal_terms_status": "Unknown",
+      "notes": "Vendor assessment service may be unavailable"
+     },
+     "risk_service": {
+      "availability": "unavailable",
+      "record": null,
+      "error": "HTTP 503: Upstream vendor assessment provider is temporarily unavailable."
+     },
+     "assessment": {
+      "is_new_vendor": true,
+      "registry_procurement_status": "New",
+      "registry_security_status": "Unknown",
+      "registry_review_date": null,
+      "registry_legal_terms_status": "Unknown",
+      "api_availability": "unavailable",
+      "api_security_status": null,
+      "api_review_date": null,
+      "api_risk_level": null,
+      "processes_personal_data": null,
+      "stores_data_outside_region": null,
+      "days_since_api_review": null,
+      "assessment_current": false,
+      "assessment_expired": false,
+      "conflict": false,
+      "conflict_reasons": [],
+      "reference_date": "2026-09-30"
+     },
+     "untrusted_text_flags": []
+    }
+   },
+   {
+    "type": "tool_call",
+    "tool": "get_requester_and_budget",
+    "inputs": {
+     "requester_id": "E004"
+    },
+    "internal": true,
+    "cached": true,
+    "ignored_inputs": [],
+    "duration_ms": 0.0,
+    "output": {
+     "found": true,
+     "employee": {
+      "employee_id": "E004",
+      "name": "Noah Williams",
+      "department": "Finance",
+      "manager_id": "E006",
+      "level": "IC4",
+      "country": "United Kingdom"
+     },
+     "manager": {
+      "employee_id": "E006",
+      "name": "Priya Shah",
+      "department": "Finance",
+      "manager_id": "E010",
+      "level": "Director",
+      "country": "India"
+     },
+     "budget": {
+      "department": "Finance",
+      "annual_software_budget_usd": 90000,
+      "committed_usd": 61000,
+      "available_usd": 29000
+     },
+     "note": null
+    }
+   },
+   {
+    "type": "tool_call",
+    "tool": "search_software_catalog",
+    "inputs": {
+     "product_name": "NimbusAI Contract Reviewer",
+     "vendor_name": "NimbusAI",
+     "category": "Legal AI"
+    },
+    "internal": true,
+    "cached": true,
+    "ignored_inputs": [],
+    "duration_ms": 0.0,
+    "output": {
+     "matches": [],
+     "match_kinds": [],
+     "purchase_history": []
+    }
+   },
+   {
+    "type": "tool_call",
+    "tool": "get_vendor_status",
+    "inputs": {
+     "vendor_name": "NimbusAI"
+    },
+    "internal": true,
+    "cached": true,
+    "ignored_inputs": [],
+    "duration_ms": 0.0,
+    "output": {
+     "vendor_name": "NimbusAI",
+     "registry": {
+      "vendor_id": "V013",
+      "vendor_name": "NimbusAI",
+      "procurement_status": "New",
+      "security_status": "Unknown",
+      "security_review_date": null,
+      "legal_terms_status": "Unknown",
+      "notes": "Vendor assessment service may be unavailable"
+     },
+     "risk_service": {
+      "availability": "unavailable",
+      "record": null,
+      "error": "HTTP 503: Upstream vendor assessment provider is temporarily unavailable."
+     },
+     "assessment": {
+      "is_new_vendor": true,
+      "registry_procurement_status": "New",
+      "registry_security_status": "Unknown",
+      "registry_review_date": null,
+      "registry_legal_terms_status": "Unknown",
+      "api_availability": "unavailable",
+      "api_security_status": null,
+      "api_review_date": null,
+      "api_risk_level": null,
+      "processes_personal_data": null,
+      "stores_data_outside_region": null,
+      "days_since_api_review": null,
+      "assessment_current": false,
+      "assessment_expired": false,
+      "conflict": false,
+      "conflict_reasons": [],
+      "reference_date": "2026-09-30"
+     },
+     "untrusted_text_flags": []
+    }
+   },
+   {
+    "type": "tool_call",
+    "tool": "run_policy_checks",
+    "inputs": {},
+    "internal": false,
+    "cached": false,
+    "ignored_inputs": [],
+    "duration_ms": 0.5,
+    "output": {
+     "reference_date": "2026-09-30",
+     "data_classes": {
+      "raw": "confidential_documents",
+      "known": true,
+      "classes": [
+       "confidential_documents"
+      ],
+      "sensitive": true,
+      "pii": false
+     },
+     "missing_information": [
+      "vendor security assessment status (vendor-risk service unavailable)"
+     ],
+     "budget": {
+      "status": "within",
+      "cost_usd": 15000,
+      "available_usd": 29000,
+      "shortfall_usd": null
+     },
+     "approval_tier": {
+      "tier": "up to $25,000",
+      "approvals": [
+       "Department Head",
+       "Finance",
+       "Procurement"
+      ]
+     },
+     "required_approvals": [
+      "Department Head",
+      "Procurement",
+      "Finance",
+      "Security",
+      "Legal"
+     ],
+     "risk_flags": [
+      "legal_review_required",
+      "security_review_required",
+      "vendor_risk_unavailable"
+     ],
+     "reasons": {
+      "security_review_required": [
+       "confidential documents",
+       "vendor security assessment could not be verified"
+      ],
+      "vendor_risk_unavailable": [
+       "vendor-risk service unavailable: HTTP 503: Upstream vendor assessment provider is temporarily unavailable."
+      ],
+      "legal_review_required": [
+       "new vendor with annual spend >= $10,000",
+       "legal terms not approved/standard (status: unknown)"
+      ]
+     },
+     "suggested_recommendation_code": "escalate_manual_review",
+     "suggested_recommendation": "Escalate to manual review",
+     "evidence": [
+      {
+       "source": "budget_check",
+       "finding": "Budget within: cost 15000 vs available 29000 USD for Finance",
+       "reference": "Policy §2"
+      },
+      {
+       "source": "approval_thresholds",
+       "finding": "Amount tier up to $25,000 requires Department Head, Finance, Procurement",
+       "reference": "Policy §4"
+      },
+      {
+       "source": "catalog_overlap",
+       "finding": "No approved catalog item matches this product, vendor or category",
+       "reference": "Policy §3"
+      },
+      {
+       "source": "vendor_status",
+       "finding": "Registry: New/Unknown (None); risk service: unavailable, status None (None); current=False",
+       "reference": "Policy §5"
+      },
+      {
+       "source": "data_classification",
+       "finding": "Data access 'confidential_documents' -> classes ['confidential_documents'], sensitive=True",
+       "reference": "Policy §5-6"
+      }
+     ]
+    }
+   },
+   {
+    "type": "tool_call",
+    "tool": "run_policy_checks",
+    "inputs": {},
+    "internal": true,
+    "cached": true,
+    "ignored_inputs": [],
+    "duration_ms": 0.0,
+    "output": {
+     "reference_date": "2026-09-30",
+     "data_classes": {
+      "raw": "confidential_documents",
+      "known": true,
+      "classes": [
+       "confidential_documents"
+      ],
+      "sensitive": true,
+      "pii": false
+     },
+     "missing_information": [
+      "vendor security assessment status (vendor-risk service unavailable)"
+     ],
+     "budget": {
+      "status": "within",
+      "cost_usd": 15000,
+      "available_usd": 29000,
+      "shortfall_usd": null
+     },
+     "approval_tier": {
+      "tier": "up to $25,000",
+      "approvals": [
+       "Department Head",
+       "Finance",
+       "Procurement"
+      ]
+     },
+     "required_approvals": [
+      "Department Head",
+      "Procurement",
+      "Finance",
+      "Security",
+      "Legal"
+     ],
+     "risk_flags": [
+      "legal_review_required",
+      "security_review_required",
+      "vendor_risk_unavailable"
+     ],
+     "reasons": {
+      "security_review_required": [
+       "confidential documents",
+       "vendor security assessment could not be verified"
+      ],
+      "vendor_risk_unavailable": [
+       "vendor-risk service unavailable: HTTP 503: Upstream vendor assessment provider is temporarily unavailable."
+      ],
+      "legal_review_required": [
+       "new vendor with annual spend >= $10,000",
+       "legal terms not approved/standard (status: unknown)"
+      ]
+     },
+     "suggested_recommendation_code": "escalate_manual_review",
+     "suggested_recommendation": "Escalate to manual review",
+     "evidence": [
+      {
+       "source": "budget_check",
+       "finding": "Budget within: cost 15000 vs available 29000 USD for Finance",
+       "reference": "Policy §2"
+      },
+      {
+       "source": "approval_thresholds",
+       "finding": "Amount tier up to $25,000 requires Department Head, Finance, Procurement",
+       "reference": "Policy §4"
+      },
+      {
+       "source": "catalog_overlap",
+       "finding": "No approved catalog item matches this product, vendor or category",
+       "reference": "Policy §3"
+      },
+      {
+       "source": "vendor_status",
+       "finding": "Registry: New/Unknown (None); risk service: unavailable, status None (None); current=False",
+       "reference": "Policy §5"
+      },
+      {
+       "source": "data_classification",
+       "finding": "Data access 'confidential_documents' -> classes ['confidential_documents'], sensitive=True",
+       "reference": "Policy §5-6"
+      }
+     ]
+    }
+   },
+   {
+    "type": "llm_call",
+    "label": "single_agent",
+    "model": "gemini-3.1-flash-lite",
+    "stop_reason": "tool_calls",
+    "tools_requested": [
+     "get_requester_and_budget",
+     "search_software_catalog",
+     "get_vendor_status",
+     "run_policy_checks"
+    ],
+    "input_tokens": 2325,
+    "output_tokens": 100,
+    "cache_read_input_tokens": 0,
+    "duration_ms": 2107.4
+   },
+   {
+    "type": "llm_call",
+    "label": "single_agent",
+    "model": "gemini-3.1-flash-lite",
+    "stop_reason": "stop",
+    "tools_requested": [],
+    "input_tokens": 3496,
+    "output_tokens": 368,
+    "cache_read_input_tokens": 0,
+    "duration_ms": 49423.4
+   },
+   {
+    "type": "llm_call",
+    "label": "single_agent_format",
+    "model": "gemini-3.1-flash-lite",
+    "stop_reason": "stop",
+    "tools_requested": [],
+    "input_tokens": 3559,
+    "output_tokens": 356,
+    "cache_read_input_tokens": 0,
+    "duration_ms": 2248.0
+   }
+  ]
+ }
+}

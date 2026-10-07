@@ -1,0 +1,709 @@
+{
+ "request_id": "REQ-1004",
+ "recommendation": "Route for required reviews before approval",
+ "recommendation_code": "route_for_reviews",
+ "summary": "The request for NeuralDesk Support Assistant requires Security, Privacy, and Legal review due to the use of customer PII and cross-region storage. Additionally, the requester must clarify why the existing company-wide 'NeuralDesk Business' license cannot fulfill the stated use case.",
+ "evidence": [
+  {
+   "source": "get_requester_and_budget",
+   "finding": "Customer Success has $7,000 available software budget; request is $6,000.",
+   "reference": "Policy §2"
+  },
+  {
+   "source": "search_software_catalog",
+   "finding": "Existing enterprise software NeuralDesk Business (SW009) found with company-wide scope.",
+   "reference": "Policy §3"
+  },
+  {
+   "source": "run_policy_checks",
+   "finding": "Mandatory reviews required: Security, Privacy, and Legal due to customer PII and cross-region data storage.",
+   "reference": "Policy §5-7"
+  },
+  {
+   "source": "get_vendor_status",
+   "finding": "Vendor security review is current (2026-03-02), but risk service indicates data processing and storage concerns.",
+   "reference": "Policy §5"
+  }
+ ],
+ "required_approvals": [
+  "Department Head",
+  "Procurement",
+  "Security",
+  "Privacy",
+  "Legal"
+ ],
+ "missing_information": [],
+ "risk_flags": [
+  "existing_tool_overlap",
+  "legal_review_required",
+  "privacy_review_required",
+  "security_review_required"
+ ],
+ "next_step": "Request clarification from the requester regarding the existing tool overlap and route the request to Security, Privacy, and Legal for mandatory reviews.",
+ "human_review_required": true,
+ "telemetry": {
+  "llm_calls": 4,
+  "tool_calls": 4,
+  "tool_names": [
+   "get_requester_and_budget",
+   "search_software_catalog",
+   "get_vendor_status",
+   "run_policy_checks"
+  ],
+  "architecture": "staged",
+  "model": "gemini-3.1-flash-lite",
+  "latency_ms": 13491.4,
+  "input_tokens": 14399,
+  "output_tokens": 1619,
+  "cache_read_input_tokens": 0,
+  "guardrail_corrections": [
+   "dropped model-added missing information (policy §1 lists none): Explanation for why existing NeuralDesk Business (SW009) license is insufficient for this use case.",
+   "dropped model-added missing information (policy §1 lists none): Confirmation on whether the requested HelpDeskly integration is possible with the current NeuralDesk instance."
+  ],
+  "raw_model_output": {
+   "recommendation_code": "route_for_reviews",
+   "summary": "The request for NeuralDesk Support Assistant requires Security, Privacy, and Legal review due to the use of customer PII and cross-region storage. Additionally, the requester must clarify why the existing company-wide 'NeuralDesk Business' license cannot fulfill the stated use case.",
+   "evidence": [
+    {
+     "source": "get_requester_and_budget",
+     "finding": "Customer Success has $7,000 available software budget; request is $6,000.",
+     "reference": "Policy §2"
+    },
+    {
+     "source": "search_software_catalog",
+     "finding": "Existing enterprise software NeuralDesk Business (SW009) found with company-wide scope.",
+     "reference": "Policy §3"
+    },
+    {
+     "source": "run_policy_checks",
+     "finding": "Mandatory reviews required: Security, Privacy, and Legal due to customer PII and cross-region data storage.",
+     "reference": "Policy §5-7"
+    },
+    {
+     "source": "get_vendor_status",
+     "finding": "Vendor security review is current (2026-03-02), but risk service indicates data processing and storage concerns.",
+     "reference": "Policy §5"
+    }
+   ],
+   "required_approvals": [
+    "Department Head",
+    "Procurement",
+    "Security",
+    "Privacy",
+    "Legal"
+   ],
+   "missing_information": [
+    "Explanation for why existing NeuralDesk Business (SW009) license is insufficient for this use case.",
+    "Confirmation on whether the requested HelpDeskly integration is possible with the current NeuralDesk instance."
+   ],
+   "risk_flags": [
+    "existing_tool_overlap",
+    "security_review_required",
+    "privacy_review_required",
+    "legal_review_required"
+   ],
+   "next_step": "Request clarification from the requester regarding the existing tool overlap and route the request to Security, Privacy, and Legal for mandatory reviews."
+  },
+  "trace": [
+   {
+    "type": "tool_call",
+    "tool": "get_requester_and_budget",
+    "inputs": {
+     "requester_id": "E005"
+    },
+    "internal": false,
+    "cached": false,
+    "ignored_inputs": [],
+    "duration_ms": 4.0,
+    "output": {
+     "found": true,
+     "employee": {
+      "employee_id": "E005",
+      "name": "Mia Thompson",
+      "department": "Customer Success",
+      "manager_id": "E007",
+      "level": "IC4",
+      "country": "United States"
+     },
+     "manager": {
+      "employee_id": "E007",
+      "name": "Robert King",
+      "department": "Go To Market",
+      "manager_id": "E010",
+      "level": "Director",
+      "country": "United States"
+     },
+     "budget": {
+      "department": "Customer Success",
+      "annual_software_budget_usd": 140000,
+      "committed_usd": 133000,
+      "available_usd": 7000
+     },
+     "note": null
+    }
+   },
+   {
+    "type": "tool_call",
+    "tool": "search_software_catalog",
+    "inputs": {
+     "product_name": "NeuralDesk Support Assistant",
+     "vendor_name": "NeuralDesk",
+     "category": "General AI"
+    },
+    "internal": false,
+    "cached": false,
+    "ignored_inputs": [],
+    "duration_ms": 4.7,
+    "output": {
+     "matches": [
+      {
+       "match_kind": "same_vendor",
+       "software_id": "SW009",
+       "product_name": "NeuralDesk Business",
+       "category": "General AI",
+       "vendor_name": "NeuralDesk",
+       "status": "Approved - limited use",
+       "annual_cost_usd": 60000,
+       "licensed_seats": 150,
+       "scope": "Company-wide",
+       "notes": "AI assistant; sensitive data restrictions apply"
+      }
+     ],
+     "match_kinds": [
+      "same_vendor"
+     ],
+     "purchase_history": [
+      {
+       "purchase_id": "PO-2531",
+       "purchase_date": "2026-07-29",
+       "department": "Operations",
+       "vendor_name": "NeuralDesk",
+       "product_name": "NeuralDesk Business",
+       "annual_amount_usd": 60000,
+       "status": "Approved",
+       "notes": "Limited-use policy applies"
+      }
+     ]
+    }
+   },
+   {
+    "type": "tool_call",
+    "tool": "get_vendor_status",
+    "inputs": {
+     "vendor_name": "NeuralDesk"
+    },
+    "internal": false,
+    "cached": false,
+    "ignored_inputs": [],
+    "duration_ms": 5.5,
+    "output": {
+     "vendor_name": "NeuralDesk",
+     "registry": {
+      "vendor_id": "V009",
+      "vendor_name": "NeuralDesk",
+      "procurement_status": "Approved",
+      "security_status": "Approved",
+      "security_review_date": "2026-03-02",
+      "legal_terms_status": "Approved",
+      "notes": "Approved only for permitted data classes"
+     },
+     "risk_service": {
+      "availability": "ok",
+      "record": {
+       "vendor_name": "NeuralDesk",
+       "risk_level": "medium",
+       "security_review_status": "approved",
+       "last_review_date": "2026-03-02",
+       "processes_personal_data": true,
+       "stores_data_outside_region": true,
+       "notes": "Sensitive-data use requires Security and Privacy review."
+      },
+      "error": null
+     },
+     "assessment": {
+      "is_new_vendor": false,
+      "registry_procurement_status": "Approved",
+      "registry_security_status": "Approved",
+      "registry_review_date": "2026-03-02",
+      "registry_legal_terms_status": "Approved",
+      "api_availability": "ok",
+      "api_security_status": "approved",
+      "api_review_date": "2026-03-02",
+      "api_risk_level": "medium",
+      "processes_personal_data": true,
+      "stores_data_outside_region": true,
+      "days_since_api_review": 212,
+      "assessment_current": true,
+      "assessment_expired": false,
+      "conflict": false,
+      "conflict_reasons": [],
+      "reference_date": "2026-09-30"
+     },
+     "untrusted_text_flags": []
+    }
+   },
+   {
+    "type": "tool_call",
+    "tool": "get_requester_and_budget",
+    "inputs": {
+     "requester_id": "E005"
+    },
+    "internal": true,
+    "cached": true,
+    "ignored_inputs": [],
+    "duration_ms": 0.0,
+    "output": {
+     "found": true,
+     "employee": {
+      "employee_id": "E005",
+      "name": "Mia Thompson",
+      "department": "Customer Success",
+      "manager_id": "E007",
+      "level": "IC4",
+      "country": "United States"
+     },
+     "manager": {
+      "employee_id": "E007",
+      "name": "Robert King",
+      "department": "Go To Market",
+      "manager_id": "E010",
+      "level": "Director",
+      "country": "United States"
+     },
+     "budget": {
+      "department": "Customer Success",
+      "annual_software_budget_usd": 140000,
+      "committed_usd": 133000,
+      "available_usd": 7000
+     },
+     "note": null
+    }
+   },
+   {
+    "type": "tool_call",
+    "tool": "search_software_catalog",
+    "inputs": {
+     "product_name": "NeuralDesk Support Assistant",
+     "vendor_name": "NeuralDesk",
+     "category": "General AI"
+    },
+    "internal": true,
+    "cached": true,
+    "ignored_inputs": [],
+    "duration_ms": 0.0,
+    "output": {
+     "matches": [
+      {
+       "match_kind": "same_vendor",
+       "software_id": "SW009",
+       "product_name": "NeuralDesk Business",
+       "category": "General AI",
+       "vendor_name": "NeuralDesk",
+       "status": "Approved - limited use",
+       "annual_cost_usd": 60000,
+       "licensed_seats": 150,
+       "scope": "Company-wide",
+       "notes": "AI assistant; sensitive data restrictions apply"
+      }
+     ],
+     "match_kinds": [
+      "same_vendor"
+     ],
+     "purchase_history": [
+      {
+       "purchase_id": "PO-2531",
+       "purchase_date": "2026-07-29",
+       "department": "Operations",
+       "vendor_name": "NeuralDesk",
+       "product_name": "NeuralDesk Business",
+       "annual_amount_usd": 60000,
+       "status": "Approved",
+       "notes": "Limited-use policy applies"
+      }
+     ]
+    }
+   },
+   {
+    "type": "tool_call",
+    "tool": "get_vendor_status",
+    "inputs": {
+     "vendor_name": "NeuralDesk"
+    },
+    "internal": true,
+    "cached": true,
+    "ignored_inputs": [],
+    "duration_ms": 0.0,
+    "output": {
+     "vendor_name": "NeuralDesk",
+     "registry": {
+      "vendor_id": "V009",
+      "vendor_name": "NeuralDesk",
+      "procurement_status": "Approved",
+      "security_status": "Approved",
+      "security_review_date": "2026-03-02",
+      "legal_terms_status": "Approved",
+      "notes": "Approved only for permitted data classes"
+     },
+     "risk_service": {
+      "availability": "ok",
+      "record": {
+       "vendor_name": "NeuralDesk",
+       "risk_level": "medium",
+       "security_review_status": "approved",
+       "last_review_date": "2026-03-02",
+       "processes_personal_data": true,
+       "stores_data_outside_region": true,
+       "notes": "Sensitive-data use requires Security and Privacy review."
+      },
+      "error": null
+     },
+     "assessment": {
+      "is_new_vendor": false,
+      "registry_procurement_status": "Approved",
+      "registry_security_status": "Approved",
+      "registry_review_date": "2026-03-02",
+      "registry_legal_terms_status": "Approved",
+      "api_availability": "ok",
+      "api_security_status": "approved",
+      "api_review_date": "2026-03-02",
+      "api_risk_level": "medium",
+      "processes_personal_data": true,
+      "stores_data_outside_region": true,
+      "days_since_api_review": 212,
+      "assessment_current": true,
+      "assessment_expired": false,
+      "conflict": false,
+      "conflict_reasons": [],
+      "reference_date": "2026-09-30"
+     },
+     "untrusted_text_flags": []
+    }
+   },
+   {
+    "type": "tool_call",
+    "tool": "run_policy_checks",
+    "inputs": {},
+    "internal": false,
+    "cached": false,
+    "ignored_inputs": [],
+    "duration_ms": 0.3,
+    "output": {
+     "reference_date": "2026-09-30",
+     "data_classes": {
+      "raw": "customer_pii",
+      "known": true,
+      "classes": [
+       "customer_pii"
+      ],
+      "sensitive": true,
+      "pii": true
+     },
+     "missing_information": [],
+     "budget": {
+      "status": "within",
+      "cost_usd": 6000,
+      "available_usd": 7000,
+      "shortfall_usd": null
+     },
+     "approval_tier": {
+      "tier": "up to $10,000",
+      "approvals": [
+       "Department Head",
+       "Procurement"
+      ]
+     },
+     "required_approvals": [
+      "Department Head",
+      "Procurement",
+      "Security",
+      "Privacy",
+      "Legal"
+     ],
+     "risk_flags": [
+      "existing_tool_overlap",
+      "legal_review_required",
+      "privacy_review_required",
+      "security_review_required"
+     ],
+     "reasons": {
+      "existing_tool_overlap": [
+       "NeuralDesk Business (same_vendor, Approved - limited use, Company-wide)"
+      ],
+      "security_review_required": [
+       "customer pii access"
+      ],
+      "privacy_review_required": [
+       "tool will process employee or customer PII",
+       "sensitive data may be stored outside the operating region"
+      ],
+      "legal_review_required": [
+       "cross-region data-processing issue"
+      ]
+     },
+     "suggested_recommendation_code": "route_for_reviews",
+     "suggested_recommendation": "Route for required reviews before approval",
+     "evidence": [
+      {
+       "source": "budget_check",
+       "finding": "Budget within: cost 6000 vs available 7000 USD for Customer Success",
+       "reference": "Policy §2"
+      },
+      {
+       "source": "approval_thresholds",
+       "finding": "Amount tier up to $10,000 requires Department Head, Procurement",
+       "reference": "Policy §4"
+      },
+      {
+       "source": "catalog_overlap",
+       "finding": "Existing catalog items: NeuralDesk Business (same_vendor, Approved - limited use, Company-wide)",
+       "reference": "Policy §3"
+      },
+      {
+       "source": "vendor_status",
+       "finding": "Registry: Approved/Approved (2026-03-02); risk service: ok, status approved (2026-03-02); current=True",
+       "reference": "Policy §5"
+      },
+      {
+       "source": "data_classification",
+       "finding": "Data access 'customer_pii' -> classes ['customer_pii'], sensitive=True",
+       "reference": "Policy §5-6"
+      }
+     ]
+    }
+   },
+   {
+    "type": "tool_call",
+    "tool": "run_policy_checks",
+    "inputs": {},
+    "internal": true,
+    "cached": true,
+    "ignored_inputs": [],
+    "duration_ms": 0.0,
+    "output": {
+     "reference_date": "2026-09-30",
+     "data_classes": {
+      "raw": "customer_pii",
+      "known": true,
+      "classes": [
+       "customer_pii"
+      ],
+      "sensitive": true,
+      "pii": true
+     },
+     "missing_information": [],
+     "budget": {
+      "status": "within",
+      "cost_usd": 6000,
+      "available_usd": 7000,
+      "shortfall_usd": null
+     },
+     "approval_tier": {
+      "tier": "up to $10,000",
+      "approvals": [
+       "Department Head",
+       "Procurement"
+      ]
+     },
+     "required_approvals": [
+      "Department Head",
+      "Procurement",
+      "Security",
+      "Privacy",
+      "Legal"
+     ],
+     "risk_flags": [
+      "existing_tool_overlap",
+      "legal_review_required",
+      "privacy_review_required",
+      "security_review_required"
+     ],
+     "reasons": {
+      "existing_tool_overlap": [
+       "NeuralDesk Business (same_vendor, Approved - limited use, Company-wide)"
+      ],
+      "security_review_required": [
+       "customer pii access"
+      ],
+      "privacy_review_required": [
+       "tool will process employee or customer PII",
+       "sensitive data may be stored outside the operating region"
+      ],
+      "legal_review_required": [
+       "cross-region data-processing issue"
+      ]
+     },
+     "suggested_recommendation_code": "route_for_reviews",
+     "suggested_recommendation": "Route for required reviews before approval",
+     "evidence": [
+      {
+       "source": "budget_check",
+       "finding": "Budget within: cost 6000 vs available 7000 USD for Customer Success",
+       "reference": "Policy §2"
+      },
+      {
+       "source": "approval_thresholds",
+       "finding": "Amount tier up to $10,000 requires Department Head, Procurement",
+       "reference": "Policy §4"
+      },
+      {
+       "source": "catalog_overlap",
+       "finding": "Existing catalog items: NeuralDesk Business (same_vendor, Approved - limited use, Company-wide)",
+       "reference": "Policy §3"
+      },
+      {
+       "source": "vendor_status",
+       "finding": "Registry: Approved/Approved (2026-03-02); risk service: ok, status approved (2026-03-02); current=True",
+       "reference": "Policy §5"
+      },
+      {
+       "source": "data_classification",
+       "finding": "Data access 'customer_pii' -> classes ['customer_pii'], sensitive=True",
+       "reference": "Policy §5-6"
+      }
+     ]
+    }
+   },
+   {
+    "type": "tool_call",
+    "tool": "run_policy_checks",
+    "inputs": {},
+    "internal": true,
+    "cached": true,
+    "ignored_inputs": [],
+    "duration_ms": 0.0,
+    "output": {
+     "reference_date": "2026-09-30",
+     "data_classes": {
+      "raw": "customer_pii",
+      "known": true,
+      "classes": [
+       "customer_pii"
+      ],
+      "sensitive": true,
+      "pii": true
+     },
+     "missing_information": [],
+     "budget": {
+      "status": "within",
+      "cost_usd": 6000,
+      "available_usd": 7000,
+      "shortfall_usd": null
+     },
+     "approval_tier": {
+      "tier": "up to $10,000",
+      "approvals": [
+       "Department Head",
+       "Procurement"
+      ]
+     },
+     "required_approvals": [
+      "Department Head",
+      "Procurement",
+      "Security",
+      "Privacy",
+      "Legal"
+     ],
+     "risk_flags": [
+      "existing_tool_overlap",
+      "legal_review_required",
+      "privacy_review_required",
+      "security_review_required"
+     ],
+     "reasons": {
+      "existing_tool_overlap": [
+       "NeuralDesk Business (same_vendor, Approved - limited use, Company-wide)"
+      ],
+      "security_review_required": [
+       "customer pii access"
+      ],
+      "privacy_review_required": [
+       "tool will process employee or customer PII",
+       "sensitive data may be stored outside the operating region"
+      ],
+      "legal_review_required": [
+       "cross-region data-processing issue"
+      ]
+     },
+     "suggested_recommendation_code": "route_for_reviews",
+     "suggested_recommendation": "Route for required reviews before approval",
+     "evidence": [
+      {
+       "source": "budget_check",
+       "finding": "Budget within: cost 6000 vs available 7000 USD for Customer Success",
+       "reference": "Policy §2"
+      },
+      {
+       "source": "approval_thresholds",
+       "finding": "Amount tier up to $10,000 requires Department Head, Procurement",
+       "reference": "Policy §4"
+      },
+      {
+       "source": "catalog_overlap",
+       "finding": "Existing catalog items: NeuralDesk Business (same_vendor, Approved - limited use, Company-wide)",
+       "reference": "Policy §3"
+      },
+      {
+       "source": "vendor_status",
+       "finding": "Registry: Approved/Approved (2026-03-02); risk service: ok, status approved (2026-03-02); current=True",
+       "reference": "Policy §5"
+      },
+      {
+       "source": "data_classification",
+       "finding": "Data access 'customer_pii' -> classes ['customer_pii'], sensitive=True",
+       "reference": "Policy §5-6"
+      }
+     ]
+    }
+   },
+   {
+    "type": "llm_call",
+    "label": "analyst",
+    "model": "gemini-3.1-flash-lite",
+    "stop_reason": "tool_calls",
+    "tools_requested": [
+     "get_requester_and_budget",
+     "search_software_catalog",
+     "get_vendor_status",
+     "run_policy_checks"
+    ],
+    "input_tokens": 2340,
+    "output_tokens": 99,
+    "cache_read_input_tokens": 0,
+    "duration_ms": 2383.5
+   },
+   {
+    "type": "llm_call",
+    "label": "analyst",
+    "model": "gemini-3.1-flash-lite",
+    "stop_reason": "stop",
+    "tools_requested": [],
+    "input_tokens": 3814,
+    "output_tokens": 464,
+    "cache_read_input_tokens": 0,
+    "duration_ms": 3786.8
+   },
+   {
+    "type": "llm_call",
+    "label": "analyst_format",
+    "model": "gemini-3.1-flash-lite",
+    "stop_reason": "stop",
+    "tools_requested": [],
+    "input_tokens": 3973,
+    "output_tokens": 542,
+    "cache_read_input_tokens": 0,
+    "duration_ms": 2918.6
+   },
+   {
+    "type": "llm_call",
+    "label": "reviewer",
+    "model": "gemini-3.1-flash-lite",
+    "stop_reason": "stop",
+    "tools_requested": [],
+    "input_tokens": 4272,
+    "output_tokens": 514,
+    "cache_read_input_tokens": 0,
+    "duration_ms": 4386.0
+   }
+  ]
+ }
+}

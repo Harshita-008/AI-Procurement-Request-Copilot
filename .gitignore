@@ -1,0 +1,19 @@
+# local environment and secrets
+.env
+.env.*
+!.env.example
+*.bak
+
+# python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# local run artifacts (reviewer action log)
+outputs/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/

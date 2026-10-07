@@ -1,0 +1,273 @@
+{
+ "request_id": "REQ-1010",
+ "recommendation": "Evaluate existing tool before purchase",
+ "recommendation_code": "evaluate_existing_tool_first",
+ "summary": "Deterministic policy evaluation only; no model interpretation.",
+ "evidence": [
+  {
+   "source": "budget_check",
+   "finding": "Budget within: cost 950 vs available 29000 USD for Finance",
+   "reference": "Policy §2"
+  },
+  {
+   "source": "approval_thresholds",
+   "finding": "Amount tier up to $1,000 requires Manager",
+   "reference": "Policy §4"
+  },
+  {
+   "source": "catalog_overlap",
+   "finding": "Existing catalog items: SignFlow (same_product, Approved, Company-wide)",
+   "reference": "Policy §3"
+  },
+  {
+   "source": "vendor_status",
+   "finding": "Registry: Approved/Approved (2026-06-20); risk service: ok, status approved (2026-06-20); current=True",
+   "reference": "Policy §5"
+  },
+  {
+   "source": "data_classification",
+   "finding": "Data access 'none' -> classes ['none'], sensitive=False",
+   "reference": "Policy §5-6"
+  }
+ ],
+ "required_approvals": [
+  "Manager"
+ ],
+ "missing_information": [],
+ "risk_flags": [
+  "existing_tool_overlap"
+ ],
+ "next_step": "Procurement to confirm with the requester whether the existing catalog tool meets the need before purchasing.",
+ "human_review_required": true,
+ "telemetry": {
+  "llm_calls": 0,
+  "tool_calls": 4,
+  "tool_names": [
+   "get_requester_and_budget",
+   "search_software_catalog",
+   "get_vendor_status",
+   "run_policy_checks"
+  ],
+  "architecture": "rules",
+  "model": null,
+  "latency_ms": 14.3,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "guardrail_corrections": [],
+  "raw_model_output": null,
+  "trace": [
+   {
+    "type": "tool_call",
+    "tool": "get_requester_and_budget",
+    "inputs": {
+     "requester_id": "E004"
+    },
+    "internal": true,
+    "cached": false,
+    "ignored_inputs": [],
+    "duration_ms": 4.1,
+    "output": {
+     "found": true,
+     "employee": {
+      "employee_id": "E004",
+      "name": "Noah Williams",
+      "department": "Finance",
+      "manager_id": "E006",
+      "level": "IC4",
+      "country": "United Kingdom"
+     },
+     "manager": {
+      "employee_id": "E006",
+      "name": "Priya Shah",
+      "department": "Finance",
+      "manager_id": "E010",
+      "level": "Director",
+      "country": "India"
+     },
+     "budget": {
+      "department": "Finance",
+      "annual_software_budget_usd": 90000,
+      "committed_usd": 61000,
+      "available_usd": 29000
+     },
+     "note": null
+    }
+   },
+   {
+    "type": "tool_call",
+    "tool": "search_software_catalog",
+    "inputs": {
+     "product_name": "SignFlow Training Pack",
+     "vendor_name": "SignFlow",
+     "category": "Professional Services"
+    },
+    "internal": true,
+    "cached": false,
+    "ignored_inputs": [],
+    "duration_ms": 3.7,
+    "output": {
+     "matches": [
+      {
+       "match_kind": "same_product",
+       "software_id": "SW010",
+       "product_name": "SignFlow",
+       "category": "E-signature",
+       "vendor_name": "SignFlow",
+       "status": "Approved",
+       "annual_cost_usd": 16000,
+       "licensed_seats": 45,
+       "scope": "Company-wide",
+       "notes": "Electronic signatures"
+      }
+     ],
+     "match_kinds": [
+      "same_product"
+     ],
+     "purchase_history": [
+      {
+       "purchase_id": "PO-2513",
+       "purchase_date": "2026-07-04",
+       "department": "Finance",
+       "vendor_name": "SignFlow",
+       "product_name": "SignFlow",
+       "annual_amount_usd": 16000,
+       "status": "Approved",
+       "notes": "Company-wide agreement"
+      }
+     ]
+    }
+   },
+   {
+    "type": "tool_call",
+    "tool": "get_vendor_status",
+    "inputs": {
+     "vendor_name": "SignFlow"
+    },
+    "internal": true,
+    "cached": false,
+    "ignored_inputs": [],
+    "duration_ms": 6.2,
+    "output": {
+     "vendor_name": "SignFlow",
+     "registry": {
+      "vendor_id": "V010",
+      "vendor_name": "SignFlow",
+      "procurement_status": "Approved",
+      "security_status": "Approved",
+      "security_review_date": "2026-06-20",
+      "legal_terms_status": "Approved",
+      "notes": "Standard vendor"
+     },
+     "risk_service": {
+      "availability": "ok",
+      "record": {
+       "vendor_name": "SignFlow",
+       "risk_level": "low",
+       "security_review_status": "approved",
+       "last_review_date": "2026-06-20",
+       "processes_personal_data": true,
+       "stores_data_outside_region": false,
+       "notes": "Current assessment."
+      },
+      "error": null
+     },
+     "assessment": {
+      "is_new_vendor": false,
+      "registry_procurement_status": "Approved",
+      "registry_security_status": "Approved",
+      "registry_review_date": "2026-06-20",
+      "registry_legal_terms_status": "Approved",
+      "api_availability": "ok",
+      "api_security_status": "approved",
+      "api_review_date": "2026-06-20",
+      "api_risk_level": "low",
+      "processes_personal_data": true,
+      "stores_data_outside_region": false,
+      "days_since_api_review": 102,
+      "assessment_current": true,
+      "assessment_expired": false,
+      "conflict": false,
+      "conflict_reasons": [],
+      "reference_date": "2026-09-30"
+     },
+     "untrusted_text_flags": []
+    }
+   },
+   {
+    "type": "tool_call",
+    "tool": "run_policy_checks",
+    "inputs": {},
+    "internal": true,
+    "cached": false,
+    "ignored_inputs": [],
+    "duration_ms": 14.2,
+    "output": {
+     "reference_date": "2026-09-30",
+     "data_classes": {
+      "raw": "none",
+      "known": true,
+      "classes": [
+       "none"
+      ],
+      "sensitive": false,
+      "pii": false
+     },
+     "missing_information": [],
+     "budget": {
+      "status": "within",
+      "cost_usd": 950,
+      "available_usd": 29000,
+      "shortfall_usd": null
+     },
+     "approval_tier": {
+      "tier": "up to $1,000",
+      "approvals": [
+       "Manager"
+      ]
+     },
+     "required_approvals": [
+      "Manager"
+     ],
+     "risk_flags": [
+      "existing_tool_overlap"
+     ],
+     "reasons": {
+      "existing_tool_overlap": [
+       "SignFlow (same_product, Approved, Company-wide)"
+      ]
+     },
+     "suggested_recommendation_code": "evaluate_existing_tool_first",
+     "suggested_recommendation": "Evaluate existing tool before purchase",
+     "evidence": [
+      {
+       "source": "budget_check",
+       "finding": "Budget within: cost 950 vs available 29000 USD for Finance",
+       "reference": "Policy §2"
+      },
+      {
+       "source": "approval_thresholds",
+       "finding": "Amount tier up to $1,000 requires Manager",
+       "reference": "Policy §4"
+      },
+      {
+       "source": "catalog_overlap",
+       "finding": "Existing catalog items: SignFlow (same_product, Approved, Company-wide)",
+       "reference": "Policy §3"
+      },
+      {
+       "source": "vendor_status",
+       "finding": "Registry: Approved/Approved (2026-06-20); risk service: ok, status approved (2026-06-20); current=True",
+       "reference": "Policy §5"
+      },
+      {
+       "source": "data_classification",
+       "finding": "Data access 'none' -> classes ['none'], sensitive=False",
+       "reference": "Policy §5-6"
+      }
+     ]
+    }
+   }
+  ]
+ }
+}

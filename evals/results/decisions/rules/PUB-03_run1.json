@@ -1,0 +1,286 @@
+{
+ "request_id": "REQ-1003",
+ "recommendation": "Route for required reviews before approval",
+ "recommendation_code": "route_for_reviews",
+ "summary": "Deterministic policy evaluation only; no model interpretation.",
+ "evidence": [
+  {
+   "source": "budget_check",
+   "finding": "Budget within: cost 18000 vs available 26000 USD for Engineering",
+   "reference": "Policy §2"
+  },
+  {
+   "source": "approval_thresholds",
+   "finding": "Amount tier up to $25,000 requires Department Head, Finance, Procurement",
+   "reference": "Policy §4"
+  },
+  {
+   "source": "catalog_overlap",
+   "finding": "Existing catalog items: CodeMate (same_product, Approved, Engineering)",
+   "reference": "Policy §3"
+  },
+  {
+   "source": "vendor_status",
+   "finding": "Registry: Approved/Approved (2026-08-20); risk service: ok, status approved (2026-08-20); current=True",
+   "reference": "Policy §5"
+  },
+  {
+   "source": "data_classification",
+   "finding": "Data access 'source_code' -> classes ['source_code'], sensitive=True",
+   "reference": "Policy §5-6"
+  }
+ ],
+ "required_approvals": [
+  "Department Head",
+  "Procurement",
+  "Finance",
+  "Security"
+ ],
+ "missing_information": [],
+ "risk_flags": [
+  "existing_tool_overlap",
+  "security_review_required"
+ ],
+ "next_step": "Send the evidence package to Department Head, Procurement, Finance, Security for review before any approval.",
+ "human_review_required": true,
+ "telemetry": {
+  "llm_calls": 0,
+  "tool_calls": 4,
+  "tool_names": [
+   "get_requester_and_budget",
+   "search_software_catalog",
+   "get_vendor_status",
+   "run_policy_checks"
+  ],
+  "architecture": "rules",
+  "model": null,
+  "latency_ms": 22.5,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "guardrail_corrections": [],
+  "raw_model_output": null,
+  "trace": [
+   {
+    "type": "tool_call",
+    "tool": "get_requester_and_budget",
+    "inputs": {
+     "requester_id": "E002"
+    },
+    "internal": true,
+    "cached": false,
+    "ignored_inputs": [],
+    "duration_ms": 2.7,
+    "output": {
+     "found": true,
+     "employee": {
+      "employee_id": "E002",
+      "name": "Arjun Mehta",
+      "department": "Engineering",
+      "manager_id": "E008",
+      "level": "IC5",
+      "country": "India"
+     },
+     "manager": {
+      "employee_id": "E008",
+      "name": "Maya Rao",
+      "department": "Engineering",
+      "manager_id": "E010",
+      "level": "Director",
+      "country": "India"
+     },
+     "budget": {
+      "department": "Engineering",
+      "annual_software_budget_usd": 300000,
+      "committed_usd": 274000,
+      "available_usd": 26000
+     },
+     "note": null
+    }
+   },
+   {
+    "type": "tool_call",
+    "tool": "search_software_catalog",
+    "inputs": {
+     "product_name": "CodeMate Teams Expansion",
+     "vendor_name": "CodeMate",
+     "category": "Developer AI"
+    },
+    "internal": true,
+    "cached": false,
+    "ignored_inputs": [],
+    "duration_ms": 2.7,
+    "output": {
+     "matches": [
+      {
+       "match_kind": "same_product",
+       "software_id": "SW008",
+       "product_name": "CodeMate",
+       "category": "Developer AI",
+       "vendor_name": "CodeMate",
+       "status": "Approved",
+       "annual_cost_usd": 90000,
+       "licensed_seats": 120,
+       "scope": "Engineering",
+       "notes": "AI coding assistant"
+      }
+     ],
+     "match_kinds": [
+      "same_product"
+     ],
+     "purchase_history": [
+      {
+       "purchase_id": "PO-2440",
+       "purchase_date": "2026-04-18",
+       "department": "Engineering",
+       "vendor_name": "CodeMate",
+       "product_name": "CodeMate",
+       "annual_amount_usd": 90000,
+       "status": "Approved",
+       "notes": "120 seats"
+      }
+     ]
+    }
+   },
+   {
+    "type": "tool_call",
+    "tool": "get_vendor_status",
+    "inputs": {
+     "vendor_name": "CodeMate"
+    },
+    "internal": true,
+    "cached": false,
+    "ignored_inputs": [],
+    "duration_ms": 16.8,
+    "output": {
+     "vendor_name": "CodeMate",
+     "registry": {
+      "vendor_id": "V008",
+      "vendor_name": "CodeMate",
+      "procurement_status": "Approved",
+      "security_status": "Approved",
+      "security_review_date": "2026-08-20",
+      "legal_terms_status": "Approved",
+      "notes": "Approved for source-code use subject to security controls"
+     },
+     "risk_service": {
+      "availability": "ok",
+      "record": {
+       "vendor_name": "CodeMate",
+       "risk_level": "medium",
+       "security_review_status": "approved",
+       "last_review_date": "2026-08-20",
+       "processes_personal_data": false,
+       "stores_data_outside_region": false,
+       "notes": "Approved for source-code use when repository controls are enabled."
+      },
+      "error": null
+     },
+     "assessment": {
+      "is_new_vendor": false,
+      "registry_procurement_status": "Approved",
+      "registry_security_status": "Approved",
+      "registry_review_date": "2026-08-20",
+      "registry_legal_terms_status": "Approved",
+      "api_availability": "ok",
+      "api_security_status": "approved",
+      "api_review_date": "2026-08-20",
+      "api_risk_level": "medium",
+      "processes_personal_data": false,
+      "stores_data_outside_region": false,
+      "days_since_api_review": 41,
+      "assessment_current": true,
+      "assessment_expired": false,
+      "conflict": false,
+      "conflict_reasons": [],
+      "reference_date": "2026-09-30"
+     },
+     "untrusted_text_flags": []
+    }
+   },
+   {
+    "type": "tool_call",
+    "tool": "run_policy_checks",
+    "inputs": {},
+    "internal": true,
+    "cached": false,
+    "ignored_inputs": [],
+    "duration_ms": 22.5,
+    "output": {
+     "reference_date": "2026-09-30",
+     "data_classes": {
+      "raw": "source_code",
+      "known": true,
+      "classes": [
+       "source_code"
+      ],
+      "sensitive": true,
+      "pii": false
+     },
+     "missing_information": [],
+     "budget": {
+      "status": "within",
+      "cost_usd": 18000,
+      "available_usd": 26000,
+      "shortfall_usd": null
+     },
+     "approval_tier": {
+      "tier": "up to $25,000",
+      "approvals": [
+       "Department Head",
+       "Finance",
+       "Procurement"
+      ]
+     },
+     "required_approvals": [
+      "Department Head",
+      "Procurement",
+      "Finance",
+      "Security"
+     ],
+     "risk_flags": [
+      "existing_tool_overlap",
+      "security_review_required"
+     ],
+     "reasons": {
+      "existing_tool_overlap": [
+       "CodeMate (same_product, Approved, Engineering)"
+      ],
+      "security_review_required": [
+       "source code access"
+      ]
+     },
+     "suggested_recommendation_code": "route_for_reviews",
+     "suggested_recommendation": "Route for required reviews before approval",
+     "evidence": [
+      {
+       "source": "budget_check",
+       "finding": "Budget within: cost 18000 vs available 26000 USD for Engineering",
+       "reference": "Policy §2"
+      },
+      {
+       "source": "approval_thresholds",
+       "finding": "Amount tier up to $25,000 requires Department Head, Finance, Procurement",
+       "reference": "Policy §4"
+      },
+      {
+       "source": "catalog_overlap",
+       "finding": "Existing catalog items: CodeMate (same_product, Approved, Engineering)",
+       "reference": "Policy §3"
+      },
+      {
+       "source": "vendor_status",
+       "finding": "Registry: Approved/Approved (2026-08-20); risk service: ok, status approved (2026-08-20); current=True",
+       "reference": "Policy §5"
+      },
+      {
+       "source": "data_classification",
+       "finding": "Data access 'source_code' -> classes ['source_code'], sensitive=True",
+       "reference": "Policy §5-6"
+      }
+     ]
+    }
+   }
+  ]
+ }
+}
